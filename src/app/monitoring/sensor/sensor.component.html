@@ -1,0 +1,27 @@
+<div *ngIf=measureLoaded style="
+      margin-bottom : 20px;
+      border: 2px solid lightgrey;
+      border-radius: 5px;
+      width: 0px;
+      display: inline-block;
+      padding : 5px">
+    <table>
+        <tr>
+            <th colspan="2" style="height : 20px; text-align : center">{{measureTypeDetails.typeName}}</th>
+        </tr>
+        <tr>
+            <td style="font-weight: bold">Location: </td>
+            <td>{{sensor.location}}</td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold">Time: </td>
+            <td *ngIf="measure.timestamp">{{measure.timestamp | date:'HH:mm:ss'}}</td>
+            <td *ngIf="!measure.timestamp">-</td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold">Value: </td>
+            <td *ngIf="measure.value">{{measure.value | number : '1.2-2'}} [{{measureTypeDetails.unitSymbol}}]</td>
+            <td *ngIf="!measure.value">-</td>
+        </tr>
+    </table>
+</div>
