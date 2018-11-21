@@ -6,7 +6,6 @@ import {SensorComponent} from './sensor/sensor.component';
 
 @Component({
   selector: 'app-monitoring',
-  styleUrls: ['./monitoring.component.css'],
   templateUrl: './monitoring.component.html'
 })
 export class MonitoringComponent implements OnInit {
