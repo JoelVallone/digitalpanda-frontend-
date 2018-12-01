@@ -8,7 +8,7 @@ import { environment } from './../../../environments/environment';
 
 @Injectable()
 export class SensorService {
-  public static baseUrl: string  =  environment.APIEndpoint + `/sensor`;
+  public static baseUrl: string  =  environment.APIEndpoint + `/ui/sensor`;
 
   constructor(private http: Http) {}
 
@@ -17,7 +17,7 @@ export class SensorService {
     params.set('type', JSON.stringify(measureKey.type).replace(/\"/g, ''));
     params.set('location', measureKey.location);
     return this.http.get(SensorService.baseUrl, {search: params})
-      .pipe(map((res) => res.json()));
+      .pipe(map((res) => res.json() as SensorMeasure));
   }
 
   loadMeasurekeys(): Observable<Array<SensorMeasureMetaData>> {

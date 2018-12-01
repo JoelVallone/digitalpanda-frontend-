@@ -16,7 +16,7 @@ export class GreetingService {
   private makeRequest(name: string): Observable<Greeting> {
     const params = new URLSearchParams();
     params.set('name', name);
-    const url = environment.APIEndpoint + `/greeting`;
+    const url = environment.APIEndpoint + `/ui/greeting`;
     return this.http.get(url, {search: params})
       .pipe(map((res) => res.json() as Greeting));
   }

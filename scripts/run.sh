@@ -15,7 +15,7 @@ if [ $# -gt 0 ] && [ $1 = "-b" ];then
     stop_containers
     cd ${ANSIBLE_FOLDER}
     echo "Deploy backend stack with Ansible"
-    ansible-playbook digitalpanda-stack.yml --inventory-file=digitalpanda-inventory-local --extra-vars "build_code=true clear_state=true"
+    ansible-playbook digitalpanda-stack.yml --inventory-file=digitalpanda-inventory-local --extra-vars "clear_state=true inject_test_data=true"
     sudo docker ps
     cd -
 fi

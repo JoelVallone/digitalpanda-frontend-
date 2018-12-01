@@ -4,7 +4,7 @@ export class SensorMeasure {
 
 
 export class SensorMeasureTypeDetails {
-  constructor(public typeName: string, public unitName: string, public unitSymbol: string){ }
+  constructor(public typeName: string, public unitName: string, public unitSymbol: string) { }
 }
 
 export enum SensorMeasureType { TEMPERATURE, HUMIDITY, PRESSURE }
