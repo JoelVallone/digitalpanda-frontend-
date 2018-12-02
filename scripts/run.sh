@@ -4,7 +4,6 @@ set -e
 SCRIPT_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ANSIBLE_FOLDER="${SCRIPT_FOLDER}/../../digitalpanda-infrastructure/ansible"
 
-trap stop_containers INT
 
 function stop_containers() {
     echo "Stopping containers"
@@ -13,9 +12,12 @@ function stop_containers() {
 
 if [ $# -gt 0 ] && [ $1 = "-b" ];then
     stop_containers
+    trap stop_containers INT
     cd ${ANSIBLE_FOLDER}
     echo "Deploy backend stack with Ansible"
-    ansible-playbook digitalpanda-stack.yml --inventory-file=digitalpanda-inventory-local --extra-vars "clear_state=true inject_test_data=true"
+    ansible-playbook digitalpanda-stack.yml \
+      --inventory-file=digitalpanda-inventory-local \
+      --extra-vars "build_code=false clear_state=false inject_test_data=true"
     sudo docker ps
     cd -
 fi
