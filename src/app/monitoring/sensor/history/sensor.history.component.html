@@ -1,0 +1,17 @@
+<h3> Historical data</h3>
+<div *ngIf=measureLoaded>
+    <ul>
+        <li>Location: {{sensor.location}}</li>
+        <li>Measure Type: {{measureTypeDetails.typeName}}</li>
+    </ul>
+    <table *ngFor="let measuresInterval of measuresIntervals" border="1">
+        <tr>
+            <th>Time</th>
+            <th>Value</th>
+        </tr>
+        <tr *ngFor="let measures of measuresInterval">
+            <td>{{measures.timestamp | date:'yyyy-MM-ddTHH:mm:ss'}}</td>
+            <td>{{measures.value}}</td>
+        </tr>
+    </table>
+</div>

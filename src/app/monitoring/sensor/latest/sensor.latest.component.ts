@@ -1,21 +1,21 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { SensorMeasureMetaData, SensorMeasure, SensorMeasureType, SensorMeasureTypeDetails } from './sensor.classes';
-import { SensorService } from './sensor.service';
+import { SensorMeasureLatestDto, SensorMeasureMetaData, SensorMeasureType, SensorMeasureTypeDetails } from './../sensor.classes';
+import { SensorService } from './../sensor.service';
 
 @Component({
-  selector: 'app-sensor',
-  templateUrl: './sensor.component.html',
-  styleUrls: ['./sensor.component.scss']
+  selector: 'app-sensor-latest',
+  templateUrl: './sensor.latest.component.html',
+  styleUrls: ['./sensor.latest.component.scss']
 })
-export class SensorComponent implements OnInit, OnDestroy {
+export class SensorLatestComponent implements OnInit, OnDestroy {
 
   @Input() public title: string;
   @Input() public sensor: SensorMeasureMetaData;
 
   public measureLoaded: boolean;
-  public measure: SensorMeasure;
+  public measure: SensorMeasureLatestDto;
   public measureTypeDetails: SensorMeasureTypeDetails;
   private periodicServiceCall: any;
 

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">
         <img src="/favicon.ico" width="30" height="30" alt="">
     </a>
@@ -15,8 +15,11 @@
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" ngbDropdownToggle>
                   Monitoring
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
+                <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown" ngbDropdownMenu>
                     <a class="dropdown-item" [routerLink]="['/monitoring/live']">Live</a>
+                </div>
+                <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown" ngbDropdownMenu>
+                    <a class="dropdown-item" [routerLink]="['/monitoring/history']">History</a>
                 </div>
             </li>
             <li class="nav-item">

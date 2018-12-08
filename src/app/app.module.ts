@@ -17,7 +17,8 @@ import {NavBarComponent} from './ui/navbar/navbar.component';
 import {AboutComponent} from './about/about.component';
 import {HomeComponent} from './home/home.component';
 import {MonitoringComponent} from './monitoring/monitoring.component';
-import {SensorComponent} from './monitoring/sensor/sensor.component';
+import {SensorLatestComponent} from './monitoring/sensor/latest/sensor.latest.component';
+import {SensorHistoryComponent} from './monitoring/sensor/history/sensor.history.component';
 import {SensorService} from './monitoring/sensor/sensor.service';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
@@ -36,7 +37,8 @@ import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 */
 
 @NgModule({
-  declarations: [AppComponent, NavBarComponent, AboutComponent, HomeComponent, MonitoringComponent, SensorComponent],
+  declarations: [AppComponent, NavBarComponent, AboutComponent, HomeComponent,
+    MonitoringComponent, SensorLatestComponent, SensorHistoryComponent],
   imports     : [BrowserModule, FormsModule, HttpModule, AppRoutingModule, NgbModule],
   providers   : [SensorService, GreetingService, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap   : [AppComponent]

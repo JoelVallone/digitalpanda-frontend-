@@ -2,12 +2,30 @@ export class SensorMeasure {
   public constructor(public value: number, public timestamp: number) { }
 }
 
+export class SensorMeasuresHistoryDto {
+  public constructor(
+    public startTimeMillisIncl: number,
+    public endTimeMillisIncl: number,
+    public timeMillisBetweenDataPoints: number,
+    public location: string,
+    public type: SensorMeasureType,
+    public values: Array<number>
+  ) { }
+}
+
+export class SensorMeasureLatestDto {
+  public constructor(public value: number, public timestamp: number) { }
+}
 
 export class SensorMeasureTypeDetails {
   constructor(public typeName: string, public unitName: string, public unitSymbol: string) { }
 }
 
-export enum SensorMeasureType { TEMPERATURE, HUMIDITY, PRESSURE }
+export enum SensorMeasureType {
+  TEMPERATURE = 'TEMPERATURE',
+  HUMIDITY = 'HUMIDITY',
+  PRESSURE = 'PRESSURE'
+}
 
 export class SensorMeasureMetaData {
   private static typeDetails  = {

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {SensorService} from './sensor/sensor.service';
 import {SensorMeasureMetaData} from './sensor/sensor.classes';
-import {SensorComponent} from './sensor/sensor.component';
+import {SensorLatestComponent} from './sensor/latest/sensor.latest.component';
 
 @Component({
   selector: 'app-monitoring',
