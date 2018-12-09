@@ -2,6 +2,14 @@ export class SensorMeasure {
   public constructor(public value: number, public timestamp: number) { }
 }
 
+export class SensorMeasureMean {
+  public constructor(
+    public value: number,
+    public refTimestamp: number,
+    public startTimestampIncl: number,
+    public endTimestampExcl: number) { }
+}
+
 export class SensorMeasuresHistoryDto {
   public constructor(
     public startTimeMillisIncl: number,

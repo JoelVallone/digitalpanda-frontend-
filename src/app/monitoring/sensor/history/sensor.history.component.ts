@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { SensorService } from './../sensor.service';
 import { SensorMeasuresHistoryDto, SensorMeasureMetaData, SensorMeasureType,
-          SensorMeasureTypeDetails, SensorMeasure} from './../sensor.classes';
+          SensorMeasureTypeDetails, SensorMeasureMean} from './../sensor.classes';
 
 @Component({
   selector: 'app-sensor-history',
@@ -17,7 +17,7 @@ export class SensorHistoryComponent implements OnInit {
   public endTimeMillisExcl: number;
   public dataPointCount: number;
 
-  public measuresIntervals: Array<Array<SensorMeasure>>;
+  public measuresIntervals: Array<Array<SensorMeasureMean>>;
 
   constructor(public sensorService: SensorService) {
     this.measureLoaded = false;
@@ -25,10 +25,12 @@ export class SensorHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.sensor = new SensorMeasureMetaData('panda-home', SensorMeasureType.TEMPERATURE);
+
+    this.measureTypeDetails = SensorMeasureMetaData.getTypeDetail(this.sensor.type);
     this.startTimeMillisIncl = 1545695940000;
     this.endTimeMillisExcl =   1545696600000;
     this.dataPointCount = 500;
-    console.log('SensorHistoryComponent ngOnInit');
+
     this.loadAndSetMeasureCallback(this);
   }
 
@@ -37,16 +39,20 @@ export class SensorHistoryComponent implements OnInit {
     .subscribe((measuresIntervalsDto) => {
       that.measuresIntervals = new Array(measuresIntervalsDto.length);
       for (let i = 0; i < measuresIntervalsDto.length; i++) {
-        const measureInterval: Array<SensorMeasure> = new Array(measuresIntervalsDto[i].values.length);
-        for (let j = 0; j < measuresIntervalsDto[i].values.length; j++) {
-          measureInterval[j] = new SensorMeasure(
-            measuresIntervalsDto[i].values[j],
-            measuresIntervalsDto[i].startTimeMillisIncl + (j * measuresIntervalsDto[i].timeMillisBetweenDataPoints));
-        }
+        const intervalDto =  measuresIntervalsDto[i];
+        const measureInterval: Array<SensorMeasureMean> = new Array(intervalDto.values.length);
+        const period = intervalDto.timeMillisBetweenDataPoints;
+        const itervalStart = intervalDto.startTimeMillisIncl;
+        measureInterval[0] = new SensorMeasureMean(intervalDto.values[0], itervalStart + (period / 2), itervalStart, itervalStart + period);
+        for (let j = 1; j < intervalDto.values.length; j++) {
+          measureInterval[j] = new SensorMeasureMean(
+            intervalDto.values[j],
+            itervalStart + (j + 0.5) * period,
+            itervalStart + j * period,
+            itervalStart + (j + 1.0) * period);
+          }
         that.measuresIntervals[i] = measureInterval;
       }
-
-      that.measureTypeDetails = SensorMeasureMetaData.getTypeDetail(that.sensor.type);
       that.measureLoaded = true;
     });
   }

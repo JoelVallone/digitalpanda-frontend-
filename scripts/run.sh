@@ -24,7 +24,7 @@ fi
 
 sleep 5
 echo "Contacting backend REST API"
-curl -v http://localhost:8080/greeting
+curl -v http://localhost:8080/ui/greeting
 
 echo "Build and serve frontend"
 npm run start
