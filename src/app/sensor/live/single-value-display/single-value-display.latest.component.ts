@@ -1,15 +1,15 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { SensorMeasureLatestDto, SensorMeasureMetaData, SensorMeasureType, SensorMeasureTypeDetails } from './../sensor.classes';
-import { SensorService } from './../sensor.service';
+import { SensorMeasureLatestDto, SensorMeasureMetaData, SensorMeasureType, SensorMeasureTypeDetails } from './../../sensor.classes';
+import { SensorService } from './../../sensor.service';
 
 @Component({
-  selector: 'app-sensor-latest',
-  templateUrl: './sensor.latest.component.html',
-  styleUrls: ['./sensor.latest.component.scss']
+  selector: 'app-single-value-latest',
+  templateUrl: './single-value-display.latest.component.html',
+  styleUrls: ['./single-value-display.latest.component.scss']
 })
-export class SensorLatestComponent implements OnInit, OnDestroy {
+export class SingleValueDisplayLatestComponent implements OnInit, OnDestroy {
 
   @Input() public title: string;
   @Input() public sensor: SensorMeasureMetaData;

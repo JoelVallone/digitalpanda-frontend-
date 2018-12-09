@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import { SensorService } from './../sensor.service';
+import { SensorService } from './../../sensor.service';
 import { SensorMeasuresHistoryDto, SensorMeasureMetaData, SensorMeasureType,
-          SensorMeasureTypeDetails, SensorMeasureMean} from './../sensor.classes';
+          SensorMeasureTypeDetails, SensorMeasureMean} from './../../sensor.classes';
 
 @Component({
-  selector: 'app-sensor-history',
-  templateUrl: './sensor.history.component.html',
-  styleUrls: ['./sensor.history.component.scss']
+  selector: 'app-debug-display-history',
+  templateUrl: './debug-display.history.component.html',
+  styleUrls: ['./debug-display.history.component.scss']
 })
-export class SensorHistoryComponent implements OnInit {
+export class DebugDisplayHistoryComponent implements OnInit {
 
   public measureLoaded: boolean;
   public sensor: SensorMeasureMetaData;
@@ -34,7 +34,7 @@ export class SensorHistoryComponent implements OnInit {
     this.loadAndSetMeasureCallback(this);
   }
 
-  loadAndSetMeasureCallback(that: SensorHistoryComponent): void {
+  loadAndSetMeasureCallback(that: DebugDisplayHistoryComponent): void {
     that.sensorService.loadHistoryMeasures(that.sensor, that.startTimeMillisIncl, that.endTimeMillisExcl, that.dataPointCount)
     .subscribe((measuresIntervalsDto) => {
       that.measuresIntervals = new Array(measuresIntervalsDto.length);

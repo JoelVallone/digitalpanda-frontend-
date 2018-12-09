@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
-import {SensorService} from './sensor/sensor.service';
-import {SensorMeasureMetaData} from './sensor/sensor.classes';
-import {SensorLatestComponent} from './sensor/latest/sensor.latest.component';
+import {SensorService} from './../sensor.service';
+import {SensorMeasureMetaData} from './../sensor.classes';
+import {SingleValueDisplayLatestComponent} from './single-value-display/single-value-display.latest.component';
 
 @Component({
-  selector: 'app-monitoring',
-  templateUrl: './monitoring.component.html'
+  selector: 'app-live-sensor',
+  templateUrl: './live.sensor.component.html'
 })
-export class MonitoringComponent implements OnInit {
+export class LiveSensorComponent implements OnInit {
   measureKeys: Observable<Array<SensorMeasureMetaData>>;
   childeTitle: string;
 

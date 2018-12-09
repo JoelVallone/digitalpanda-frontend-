@@ -16,10 +16,7 @@ import {HttpModule} from '@angular/http';
 import {NavBarComponent} from './ui/navbar/navbar.component';
 import {AboutComponent} from './about/about.component';
 import {HomeComponent} from './home/home.component';
-import {MonitoringComponent} from './monitoring/monitoring.component';
-import {SensorLatestComponent} from './monitoring/sensor/latest/sensor.latest.component';
-import {SensorHistoryComponent} from './monitoring/sensor/history/sensor.history.component';
-import {SensorService} from './monitoring/sensor/sensor.service';
+import {SensorModule} from './sensor/sensor.module';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
 /*
@@ -37,10 +34,9 @@ import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 */
 
 @NgModule({
-  declarations: [AppComponent, NavBarComponent, AboutComponent, HomeComponent,
-    MonitoringComponent, SensorLatestComponent, SensorHistoryComponent],
-  imports     : [BrowserModule, FormsModule, HttpModule, AppRoutingModule, NgbModule],
-  providers   : [SensorService, GreetingService, {provide: LocationStrategy, useClass: HashLocationStrategy}],
+  declarations: [AppComponent, NavBarComponent, AboutComponent, HomeComponent],
+  imports     : [BrowserModule, FormsModule, HttpModule, AppRoutingModule, NgbModule, SensorModule],
+  providers   : [GreetingService, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap   : [AppComponent]
 })
 export class AppModule { }
