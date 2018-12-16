@@ -8,5 +8,12 @@ import {DebugDisplayHistoryComponent} from './debug-display/debug-display.histor
   selector: 'app-sensor-history',
   templateUrl: './history.sensor.component.html'
 })
-export class HistorySensorComponent {
+export class HistorySensorComponent  implements OnInit {
+  measureKeys: Observable<Array<SensorMeasureMetaData>>;
+
+  constructor(public sensorService: SensorService) { }
+
+  ngOnInit() {
+      this.measureKeys = this.sensorService.loadMeasurekeys();
+  }
 }

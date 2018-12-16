@@ -1,0 +1,19 @@
+<H4>Sensor-identification</H4>
+<ul *ngFor="let pair of this._measureTypesByLocation | keyvalue">
+    <li> {{pair.key}}
+        <ul>
+            <li *ngFor="let measureTypeDetail of pair.value">
+                {{measureTypeDetail}}
+            </li>
+        </ul>
+    </li>
+</ul>
+
+<!-- TODO: Add reactive form
+<div class="btn-group btn-group-toggle" *ngFor="let pair of this._measureTypesByLocation | keyvalue">
+    {{pair.key}}
+    <label class="btn-primary" *ngFor="let measureType of pair.value" ngbButtonLabel>
+        <input type="checkbox" ngbButton [(ngModel)]="???"> {{measureType}}
+    </label>
+</div>
+-->

@@ -19,20 +19,6 @@ import {HomeComponent} from './home/home.component';
 import {SensorModule} from './sensor/sensor.module';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
-/*
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-*/
-
 @NgModule({
   declarations: [AppComponent, NavBarComponent, AboutComponent, HomeComponent],
   imports     : [BrowserModule, FormsModule, HttpModule, AppRoutingModule, NgbModule, SensorModule],

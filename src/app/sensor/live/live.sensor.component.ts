@@ -10,12 +10,10 @@ import {SingleValueDisplayLatestComponent} from './single-value-display/single-v
 })
 export class LiveSensorComponent implements OnInit {
   measureKeys: Observable<Array<SensorMeasureMetaData>>;
-  childeTitle: string;
 
   constructor(public sensorService: SensorService) { }
 
   ngOnInit() {
       this.measureKeys = this.sensorService.loadMeasurekeys();
-      this.childeTitle = 'blop';
   }
 }

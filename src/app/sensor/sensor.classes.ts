@@ -27,6 +27,7 @@ export class SensorMeasureLatestDto {
 
 export class SensorMeasureTypeDetails {
   constructor(public typeName: string, public unitName: string, public unitSymbol: string) { }
+  public toString = (): string => this.typeName + ' [' + this.unitSymbol + ']';
 }
 
 export enum SensorMeasureType {
