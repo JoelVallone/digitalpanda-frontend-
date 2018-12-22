@@ -1,19 +1,22 @@
-<H4>Sensor-identification</H4>
+<!--<H4>Sensor-identification</H4>-->
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div formArrayName="locationsMeasures">
-        <ul *ngFor="let locationMeasures of locationsMeasures.controls; let i=index">
-            <li [formGroupName]="i">{{locationMeasures.get('location').value}}
-                <div formArrayName="measures">
+    <div formArrayName="locationsMeasures" *ngFor="let locationMeasures of locationsMeasures.controls; let i=index">
+        <div [formGroupName]="i" class="card" style="margin-top: 10px">
+            <h5 class="card-header">Location: {{locationMeasures.get('location').value}}</h5>
+            <div class="card-body" formArrayName="measures">
+                <div class="card-text">
                     <div *ngFor="let measure of locationMeasures.get('measures').controls; let j=index" class="btn-group btn-group-toggle">
-                        <label [formGroupName]="j" class="btn-primary" ngbButtonLabel>
-                          <input type="checkbox" formControlName="isSelected" ngbButton>{{measure.get('measureTypeName').value}}
-                      </label>
+                        <label [formGroupName]="j" class="btn btn-outline-secondary" ngbButtonLabel>
+                              <input type="checkbox" formControlName="isSelected" ngbButton>{{measure.get('measureTypeName').value}}
+                            </label>
                     </div>
                 </div>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
-    <button class="btn btn-success" type="submit" [disabled]="!form.valid">Submit</button>
+    <div style="margin-top: 10px">
+        <button class="btn btn-success" type="submit" [disabled]="!canSubmit()">Submit</button>
+    </div>
     <!--
       <p>
           Form Value: {{ form.value | json }}

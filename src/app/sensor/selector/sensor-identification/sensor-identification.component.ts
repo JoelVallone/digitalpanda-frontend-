@@ -66,6 +66,13 @@ export class SensorIdentificationComponent implements OnInit, OnChanges {
     }
   }
 
+  canSubmit(): Boolean {
+    return this.locationsMeasures.controls.some(locationMeasures =>
+      (locationMeasures.get('measures') as FormArray).controls.some(measure =>
+        measure.get('isSelected').value)
+      );
+  }
+
   onSubmit() {
     if (!this.form.valid) {
       console.error('Invalid form' + JSON.stringify(this.form.errors));
