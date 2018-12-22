@@ -1,7 +1,7 @@
 
 /* These are JavaScript import statements. Angular doesn’t know anything about these. */
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import {SingleValueDisplayLatestComponent} from './live/single-value-display/single-value-display.latest.component';
@@ -14,7 +14,7 @@ import {SensorIdentificationComponent} from './selector/sensor-identification/se
 @NgModule({
   imports: [
     CommonModule,  /* These are NgModule imports used by Angular. */
-    FormsModule
+    ReactiveFormsModule
   ],
   providers: [
     SensorService
