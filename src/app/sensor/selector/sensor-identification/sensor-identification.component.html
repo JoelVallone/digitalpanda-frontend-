@@ -1,36 +1,22 @@
 <H4>Sensor-identification</H4>
-<ul *ngFor="let pair of this._measureTypesByLocation | keyvalue">
-    <li> {{pair.key}}
-        <ul>
-            <li *ngFor="let measureTypeDetail of pair.value">
-                {{measureTypeDetail}}
-            </li>
-        </ul>
-    </li>
-</ul>
-
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <!-- TODO: Add reactive for -->
-    <!-- <div class="btn-group btn-group-toggle" *ngFor="let pair of this._measureTypesByLocation | keyvalue" [formGroup]="_measureIdsForm">
-        {{pair.key}}-->
     <div formArrayName="locationsMeasures">
         <ul *ngFor="let locationMeasures of locationsMeasures.controls; let i=index">
-            <li [formGroupName]="i">{{i}} - {{locationMeasures.get('location').value}}
-                <ul formArrayName="measures">
-                    <li *ngFor="let measure of locationMeasures.get('measures').controls; let j=index">
-                        {{j}} - {{measure.get('measureTypeName').value}}
-                        <label [formGroupName]="j" class="btn-primary">
-                            <input formControlName="selectionControl" type="checkbox">
-                        </label>
-                    </li>
-                </ul>
+            <li [formGroupName]="i">{{locationMeasures.get('location').value}}
+                <div formArrayName="measures">
+                    <div *ngFor="let measure of locationMeasures.get('measures').controls; let j=index" class="btn-group btn-group-toggle">
+                        <label [formGroupName]="j" class="btn-primary" ngbButtonLabel>
+                          <input type="checkbox" formControlName="isSelected" ngbButton>{{measure.get('measureTypeName').value}}
+                      </label>
+                    </div>
+                </div>
             </li>
         </ul>
     </div>
-
-    <button type="submit" [disabled]="!form.valid">Submit</button>
-
-    <p>
-        Form Value: {{ form.value | json }}
-    </p>
+    <button class="btn btn-success" type="submit" [disabled]="!form.valid">Submit</button>
+    <!--
+      <p>
+          Form Value: {{ form.value | json }}
+      </p>
+    -->
 </form>

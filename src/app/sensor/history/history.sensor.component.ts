@@ -16,4 +16,9 @@ export class HistorySensorComponent  implements OnInit {
   ngOnInit() {
       this.measureKeys = this.sensorService.loadMeasurekeys();
   }
+
+
+  onMeasureKeysSelected(selectedMeasureKeys: Array<SensorMeasureMetaData>) {
+    console.log('Selected measure keys: ' + JSON.stringify(selectedMeasureKeys));
+  }
 }

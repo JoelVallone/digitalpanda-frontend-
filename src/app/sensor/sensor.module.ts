@@ -1,6 +1,7 @@
 
 /* These are JavaScript import statements. Angular doesn’t know anything about these. */
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -14,7 +15,8 @@ import {SensorIdentificationComponent} from './selector/sensor-identification/se
 @NgModule({
   imports: [
     CommonModule,  /* These are NgModule imports used by Angular. */
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule
   ],
   providers: [
     SensorService
