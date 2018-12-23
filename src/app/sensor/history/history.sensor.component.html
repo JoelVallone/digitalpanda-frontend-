@@ -1,17 +1,15 @@
 <h3> Historical data</h3>
+<p>
+    <button type="button" class="btn btn-outline-primary" (click)="toggleSensorSelection()" [attr.aria-expanded]="!isSelectionCollapsed" aria-controls="collapseExample">
+    {{ isSelectionCollapsed ? sensorSelectionText : 'Hide sensor selection' }}
+  </button>
+</p>
+<div id="sensor-selection" [ngbCollapse]="isSelectionCollapsed">
+    <div class="card">
+        <app-sensor-identification class="card-body" [measureKeys]="measureKeys | async" (selectedMeasureKeys)=onMeasureKeysSelected($event)>
+        </app-sensor-identification>
+    </div>
+</div>
 
 
-
-<ngb-accordion [closeOthers]="true" activeIds="sensor-selection">
-    <ngb-panel id="sensor-selection" title="Sensor selection">
-        <ng-template ngbPanelContent>
-            <app-sensor-identification [measureKeys]="measureKeys | async" (selectedMeasureKeys)=onMeasureKeysSelected($event)>
-            </app-sensor-identification>
-        </ng-template>
-    </ngb-panel>
-    <ngb-panel id="history-debug" title="Debug display">
-        <ng-template ngbPanelContent>
-            <app-debug-display-history></app-debug-display-history>
-        </ng-template>
-    </ngb-panel>
-</ngb-accordion>
+<app-debug-display-history *ngIf="displayData"></app-debug-display-history>
