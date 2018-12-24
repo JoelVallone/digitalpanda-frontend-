@@ -6,8 +6,7 @@
 </p>
 <div id="sensor-selection" [ngbCollapse]="isSelectionCollapsed">
     <div class="card">
-        <app-sensor-identification class="card-body" [measureKeys]="measureKeys | async" (selectedMeasureKeys)=onMeasureKeysSelected($event)>
-        </app-sensor-identification>
+        <app-sensor-history-selector> </app-sensor-history-selector>
     </div>
 </div>
 

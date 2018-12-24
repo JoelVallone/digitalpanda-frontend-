@@ -4,14 +4,13 @@ import {Observable} from 'rxjs';
 import {SensorService} from './../sensor.service';
 import {SensorMeasureMetaData} from './../sensor.classes';
 import {DebugDisplayHistoryComponent} from './debug-display/debug-display.history.component';
+import { SensorHistorySelectorFormService } from '../selector/sensor-history-selector-form.service';
 
 @Component({
   selector: 'app-sensor-history',
   templateUrl: './history.sensor.component.html'
 })
-export class HistorySensorComponent  implements OnInit {
-
-  measureKeys: Observable<Array<SensorMeasureMetaData>>;
+export class HistorySensorComponent {
 
   isSelectionCollapsed: Boolean;
   sensorSelectionText: String = '';
@@ -19,16 +18,12 @@ export class HistorySensorComponent  implements OnInit {
 
   // @ViewChild(NgbAccordion) accordion: NgbAccordion;
 
-  constructor(public sensorService: SensorService) {
+  constructor(public formService: SensorHistorySelectorFormService) {
 
     // TODO: Persist selection into a service
     this.isSelectionCollapsed = false;
     this.displayData = false;
     this.sensorSelectionText = 'Select sensors';
-  }
-
-  ngOnInit() {
-      this.measureKeys = this.sensorService.loadMeasurekeys();
   }
 
   toggleSensorSelection() {
@@ -37,7 +32,7 @@ export class HistorySensorComponent  implements OnInit {
   }
 
   onMeasureKeysSelected(selectedMeasureKeys: Array<SensorMeasureMetaData>) {
-    // TODO: Further handle measure selection
+    // TODO: Subscribe to form selection in formService and Further handle measure selection
     this.isSelectionCollapsed = true;
     this.displayData = true;
     this.sensorSelectionText = 'Change sensor selection';

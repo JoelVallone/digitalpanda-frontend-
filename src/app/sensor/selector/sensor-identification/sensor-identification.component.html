@@ -1,35 +1,25 @@
-<!--<H4>Sensor-identification</H4>-->
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-
+<div [formGroup]="sensorsIdentificationForm">
     <button style="margin : 5px" class="btn btn-warning" type="button" (click)="toggleAllLocations()">
-      {{ isMeasureTypesByLocationEmtpy() ? 'Select all locations' : 'Clear all locations' }}
-    </button>
+    {{ isMeasureTypesByLocationEmtpy() ? 'Select all locations' : 'Clear all locations' }}
+  </button>
 
-    <div formArrayName="locations" *ngFor="let location of locations.controls; let i=index " class="btn-group btn-group-toggle">
+    <div formArrayName="locations" *ngFor="let location of sensorsIdentificationForm.get('locations').controls; let i=index " class="btn-group btn-group-toggle">
         <label [formGroupName]="i" class="btn btn-outline-secondary" ngbButtonLabel>
-          <input type="checkbox" formControlName="isSelected" ngbButton>{{location.get('location').value}}
-        </label>
+        <input type="checkbox" formControlName="isSelected" ngbButton>{{location.get('location').value}}
+      </label>
     </div>
-    <div formArrayName="locationsMeasures" *ngFor="let locationMeasures of locationsMeasures.controls; let i=index">
+    <div formArrayName="locationsMeasures" *ngFor="let locationMeasures of sensorsIdentificationForm.get('locationsMeasures').controls; let i=index">
         <div [formGroupName]="i" class="card" style="margin-top: 10px">
             <h5 class="card-header">Location: {{locationMeasures.get('location').value}}</h5>
             <div class="card-body" formArrayName="measures">
                 <div class="card-text">
                     <div *ngFor="let measure of locationMeasures.get( 'measures').controls; let j=index" class="btn-group btn-group-toggle">
                         <label [formGroupName]="j" class="btn btn-outline-secondary" ngbButtonLabel>
-                            <input type="checkbox" formControlName="isSelected" ngbButton>{{measure.get('measureTypeName').value}}
-                          </label>
+                          <input type="checkbox" formControlName="isSelected" ngbButton>{{measure.get('measureTypeName').value}}
+                        </label>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div style="margin-top: 10px">
-        <button class="btn btn-success" type="submit" [disabled]="!canSubmit()">Submit</button>
-    </div>
-    <!--
-    <p>
-        Form Value: {{ form.value | json }}
-    </p>
-  -->
-</form>
+</div>
