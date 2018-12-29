@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 // https://github.com/angular/angular-cli/wiki/stories-include-bootstrap
@@ -10,7 +11,6 @@ import { AppComponent } from './app.component';
 
 import {RouterModule} from '@angular/router';
 import {GreetingService} from './home/greeting.service';
-import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 
 import {NavBarComponent} from './ui/navbar/navbar.component';

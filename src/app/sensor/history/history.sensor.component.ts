@@ -23,7 +23,7 @@ export class HistorySensorComponent {
     // TODO: Persist selection into a service
     this.isSelectionCollapsed = false;
     this.displayData = false;
-    this.sensorSelectionText = 'Select sensors';
+    this.sensorSelectionText = 'Select data';
   }
 
   toggleSensorSelection() {
@@ -35,7 +35,7 @@ export class HistorySensorComponent {
     // TODO: Subscribe to form selection in formService and Further handle measure selection
     this.isSelectionCollapsed = true;
     this.displayData = true;
-    this.sensorSelectionText = 'Change sensor selection';
+    this.sensorSelectionText = 'Change data selection';
     console.log('Selected measure keys: ' + JSON.stringify(selectedMeasureKeys));
   }
 }

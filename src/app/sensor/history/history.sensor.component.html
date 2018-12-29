@@ -1,7 +1,7 @@
 <h3> Historical data</h3>
 <p>
     <button type="button" class="btn btn-outline-primary" (click)="toggleSensorSelection()" [attr.aria-expanded]="!isSelectionCollapsed" aria-controls="collapseExample">
-    {{ isSelectionCollapsed ? sensorSelectionText : 'Hide sensor selection' }}
+    {{ isSelectionCollapsed ? sensorSelectionText : 'Hide data selection' }}
   </button>
 </p>
 <div id="sensor-selection" [ngbCollapse]="isSelectionCollapsed">

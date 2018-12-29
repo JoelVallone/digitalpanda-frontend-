@@ -1,15 +1,42 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter, Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, FormBuilder } from '@angular/forms';
-import {NgbDate, NgbCalendar, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDate, NgbCalendar, NgbTimeStruct, NgbTimeAdapter} from '@ng-bootstrap/ng-bootstrap';
 
 import { SensorMeasureMetaData, SensorMeasureTypeDetails, SensorMeasureType } from './../../sensor.classes';
 import { map } from 'rxjs/operators';
 import { SensorHistorySelectorFormService } from '../sensor-history-selector-form.service';
 
+@Injectable()
+export class NgbTimeStringAdapter extends NgbTimeAdapter<string> {
+
+  fromModel(value: string): NgbTimeStruct {
+    console.log('fromModel: ' + value);
+    if (!value) {
+      return null;
+    }
+    const split = value.split(':');
+    return {
+      hour: parseInt(split[0], 10),
+      minute: parseInt(split[1], 10),
+      second: parseInt(split[2], 10)
+    };
+  }
+
+  toModel(time: NgbTimeStruct): string {
+    console.log('toModel: ' + JSON.stringify(time));
+    if (!time) {
+      return null;
+    }
+    return `${time.hour}:${time.minute}:${time.second}`;
+  }
+}
+
+
 @Component({
   selector: 'app-time-interval-selector',
   templateUrl: './time-interval-selector.component.html',
-  styleUrls: ['./time-interval-selector.component.scss']
+  styleUrls: ['./time-interval-selector.component.scss'],
+  providers: [{provide: NgbTimeAdapter, useClass: NgbTimeStringAdapter}]
 })
 export class TimeIntervalSelectorComponent {
 
@@ -25,15 +52,19 @@ export class TimeIntervalSelectorComponent {
 
   constructor(calendar: NgbCalendar, public formService: SensorHistorySelectorFormService) {
     /**/
-    const now: Date = new Date();
-    this.fromTime = this.toFormViewTime(now);
-    this.toTime = this.toFormViewTime(now);
-    this.setDefaultDates();
+    this.setDefaultInterval();
     this.displayDatePicker = false;
   }
 
   private setDefaultInterval() {
     this.setDefaultDates();
+    this.setDefaultTimes();
+  }
+
+  private setDefaultTimes() {
+    const now: Date = new Date();
+    this.formService.updateToTime(now);
+    this.formService.updateFromTime(now);
   }
 
   private setDefaultDates() {
@@ -50,10 +81,6 @@ export class TimeIntervalSelectorComponent {
 
   private toStdDate(viewDate: NgbDate): Date {
     return viewDate ? new Date(viewDate.year, viewDate.month - 1, viewDate.day) :  null ;
-  }
-
-  private toFormViewTime(date: Date): NgbTimeStruct {
-    return{hour: date.getHours(), minute: date.getMinutes(), second: date.getSeconds()};
   }
 
   private updateToDate(date: NgbDate): void {

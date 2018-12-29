@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, FormArray, FormControl, FormBuilder } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { SensorService } from '../sensor.service';
@@ -12,13 +12,40 @@ export class SensorHistorySelectorFormService {
   public form: FormGroup;
   private _measureTypesByLocationMap = new Map<string, Array<SensorMeasureMetaData>>();
 
+
+  public static toStringTime(date: Date): string {
+    return date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+  }
+
   constructor(public sensorService: SensorService, private fb: FormBuilder) {
     this.form  = this.fb.group({
       sensorsIdentification : this.fb.group({
         locations : this.fb.array([]),
-        locationsMeasures: this.fb.array([])})
-      });
+        locationsMeasures: this.fb.array([])}),
+      timeInterval: this.fb.group({
+        from: this.fb.group({
+          date: this.fb.control(this.defaultDate(), (fc) => this.rawDateValidator(fc)),
+          time: this.fb.control(this.defaultTime()),
+        }),
+        to: this.fb.group({
+          date: this.fb.control(this.defaultDate(), (fc) => this.rawDateValidator(fc)),
+          time: this.fb.control(this.defaultTime()),
+        },
+        (fg) => this.datePrecedenceValidator(fg)
+      )
+      })
+    });
     this.subscribeInternalListeners();
+  }
+
+  private defaultDate(): string {
+    return this.toStringDate(new Date());
+  }
+
+  private defaultTime(): any {
+    const date = new Date();
+    const time: string = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+    return time;
   }
 
   private subscribeInternalListeners(): void {
@@ -37,6 +64,113 @@ export class SensorHistorySelectorFormService {
   get locations(): FormArray {
     return this.form.get('sensorsIdentification').get('locations') as FormArray;
   }
+
+  get timeInterval(): FormGroup {
+    return this.form.get('timeInterval')as FormGroup;
+  }
+
+  private getDate(toOrFrom: string): string {
+    return this.timeInterval.get(toOrFrom).get('date').value;
+  }
+
+  public getToDateStd(): Date {
+    return this.parseDate(this.getDate('to'));
+  }
+
+  public getFromDateStd(): Date {
+    return this.parseDate(this.getDate('from'));
+  }
+
+  public datePrecedenceValidator(control: AbstractControl): ValidationErrors {
+    const fromDateCg = control.get('from').get('date');
+    const toDateCg = control.get('to').get('date');
+    if (!fromDateCg || !toDateCg) {
+      return null;
+    }
+    const fromDate: Date = this.parseDate(fromDateCg.value);
+    const toDate: Date = this.parseDate(toDateCg.value);
+    if (!fromDate || !toDate) {
+      return null;
+    }
+    if (fromDate > toDate) {
+      return {datePrecedence: true};
+    }
+  }
+
+  public rawDateValidator(control: AbstractControl): ValidationErrors {
+    if (!control) {
+      return;
+    }
+
+    let validationResult = null;
+    if (!control.value || !this.isRawDateValid(control.value)) {
+      console.error('Invalid raw date: ' + control.value);
+      // control.setErrors({rawDate: true});
+      validationResult = {rawDate: true};
+    } else {
+      console.log('Valid raw date: ' + control.value);
+      // control.setErrors({rawDate: false});
+    }
+
+    return validationResult;
+  }
+
+  public isRawDateValid(date: string): Boolean {
+    if (date && date.match(/^[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2}$/)) {
+      const dateElements: Array<string> =  date.split('-');
+      const month: number = +dateElements[1];
+      const day: number = +dateElements[2];
+      return (month >= 1 && month <= 12 && day >= 1 && day <= 31);
+    }
+    return false;
+  }
+
+  // Expected format : yyyy-mm-dd
+  private parseDate(date: string): Date {
+    if (!this.isRawDateValid(date)) { return null; }
+    const dateElements: Array<string> =  date.split('-');
+    return new Date(+dateElements[0], +dateElements[1] - 1, +dateElements[2]);
+  }
+
+  private toStringDate(date: Date): string {
+    const dateString: string = date.getFullYear() + '-'  + (date.getMonth() + 1) + '-' + date.getDate();
+    return dateString;
+  }
+
+  public updateToDate(date: Date): void {
+    this.updateDate('to', date);
+  }
+
+  public updateFromDate(date: Date): void {
+    this.updateDate('from', date);
+  }
+
+  private updateDate(toOrFrom: string, date: Date): void {
+    const dateFc: FormControl = this.timeInterval.get(toOrFrom).get('date') as FormControl;
+    if (date) {
+      dateFc.setValue(this.toStringDate(date));
+    } else {
+      dateFc.reset();
+    }
+  }
+
+  public updateToTime(date: Date): void {
+    this.updateTime('to', date);
+  }
+
+  public updateFromTime(date: Date): void {
+    this.updateTime('from', date);
+  }
+
+  private updateTime(toOrFrom: string, date: Date): void {
+    const dateFc: FormControl = this.timeInterval.get(toOrFrom).get('time') as FormControl;
+    if (date) {
+      dateFc.setValue(SensorHistorySelectorFormService.toStringTime(date));
+    } else {
+      dateFc.reset();
+    }
+  }
+
 
   public refreshFormData(): FormGroup {
     this.sensorService
