@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, FormArray, FormControl, FormBuilder, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, FormBuilder, AbstractControl, ValidationErrors, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { SensorService } from '../sensor.service';
@@ -21,19 +21,20 @@ export class SensorHistorySelectorFormService {
     this.form  = this.fb.group({
       sensorsIdentification : this.fb.group({
         locations : this.fb.array([]),
-        locationsMeasures: this.fb.array([])}),
+        locationsMeasures: this.fb.array([], (fa) => this.atLeastOneMeasureSelectedValidator(fa))}),
       timeInterval: this.fb.group({
-        from: this.fb.group({
-          date: this.fb.control(this.defaultDate(), (fc) => this.rawDateValidator(fc)),
-          time: this.fb.control(this.defaultTime()),
-        }),
-        to: this.fb.group({
-          date: this.fb.control(this.defaultDate(), (fc) => this.rawDateValidator(fc)),
-          time: this.fb.control(this.defaultTime()),
+          from: this.fb.group({
+            date: this.fb.control(this.defaultDate(), [Validators.required, (fc) => this.rawDateFormatValidator(fc)]),
+            time: this.fb.control(this.defaultTime(), Validators.required),
+          }),
+          to: this.fb.group({
+            date: this.fb.control(this.defaultDate(), [Validators.required, (fc) => this.rawDateFormatValidator(fc)]),
+            time: this.fb.control(this.defaultTime(), Validators.required),
+          })
         },
-        (fg) => this.datePrecedenceValidator(fg)
-      )
-      })
+        {
+          validator:  (fg) => this.timestampPrecedenceValidator(fg)
+        })
     });
     this.subscribeInternalListeners();
   }
@@ -81,7 +82,7 @@ export class SensorHistorySelectorFormService {
     return this.parseDate(this.getDate('from'));
   }
 
-  public datePrecedenceValidator(control: AbstractControl): ValidationErrors {
+  public timestampPrecedenceValidator(control: AbstractControl): ValidationErrors {
     const fromDateCg = control.get('from').get('date');
     const toDateCg = control.get('to').get('date');
     if (!fromDateCg || !toDateCg) {
@@ -93,26 +94,17 @@ export class SensorHistorySelectorFormService {
       return null;
     }
     if (fromDate > toDate) {
-      return {datePrecedence: true};
+      return {timestampPrecedence: true};
     }
+    return null;
   }
 
-  public rawDateValidator(control: AbstractControl): ValidationErrors {
-    if (!control) {
-      return;
-    }
-
-    let validationResult = null;
+  public rawDateFormatValidator(control: AbstractControl): ValidationErrors {
     if (!control.value || !this.isRawDateValid(control.value)) {
-      console.error('Invalid raw date: ' + control.value);
-      // control.setErrors({rawDate: true});
-      validationResult = {rawDate: true};
-    } else {
-      console.log('Valid raw date: ' + control.value);
-      // control.setErrors({rawDate: false});
+      return {rawDateFormat: true};
     }
 
-    return validationResult;
+    return null;
   }
 
   public isRawDateValid(date: string): Boolean {
@@ -279,16 +271,15 @@ export class SensorHistorySelectorFormService {
   }
 
   public canSubmit(): Boolean {
-    return this.form.valid
-      && this.hasAtLeastOneMeasureSelected();
+    return this.form.valid;
   }
 
-  private hasAtLeastOneMeasureSelected(): Boolean {
-    return this.locationsMeasures.length !== 0
-      && this.locationsMeasures.controls
-          .some(locationMeasures =>
-              (locationMeasures.get('measures') as FormArray).controls
-                  .some(measure => measure.get('isSelected').value));
+  private atLeastOneMeasureSelectedValidator(locationsMeasures: AbstractControl): ValidationErrors {
+    const atLeastOneSelected: Boolean = (locationsMeasures as FormArray).controls.length !== 0
+    && (locationsMeasures as FormArray).controls
+        .some(locationMeasures =>
+            (locationMeasures.get('measures') as FormArray).controls
+                .some(measure => measure.get('isSelected').value));
+    return atLeastOneSelected ? null : {atLeastOneMeasureSelected : true};
   }
-
 }

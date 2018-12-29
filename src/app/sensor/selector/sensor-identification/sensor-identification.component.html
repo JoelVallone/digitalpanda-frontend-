@@ -22,4 +22,7 @@
             </div>
         </div>
     </div>
+    <div *ngIf="sensorsIdentificationForm.get('locationsMeasures').errors">
+        <div *ngIf="sensorsIdentificationForm.get('locationsMeasures').errors.atLeastOneMeasureSelected">Must select at least one measure type at a location.</div>
+    </div>
 </div>

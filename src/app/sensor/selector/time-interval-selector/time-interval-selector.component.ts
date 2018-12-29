@@ -10,7 +10,6 @@ import { SensorHistorySelectorFormService } from '../sensor-history-selector-for
 export class NgbTimeStringAdapter extends NgbTimeAdapter<string> {
 
   fromModel(value: string): NgbTimeStruct {
-    console.log('fromModel: ' + value);
     if (!value) {
       return null;
     }
@@ -23,7 +22,6 @@ export class NgbTimeStringAdapter extends NgbTimeAdapter<string> {
   }
 
   toModel(time: NgbTimeStruct): string {
-    console.log('toModel: ' + JSON.stringify(time));
     if (!time) {
       return null;
     }
@@ -53,7 +51,7 @@ export class TimeIntervalSelectorComponent {
   constructor(calendar: NgbCalendar, public formService: SensorHistorySelectorFormService) {
     /**/
     this.setDefaultInterval();
-    this.displayDatePicker = false;
+    this.displayDatePicker = true;
   }
 
   private setDefaultInterval() {

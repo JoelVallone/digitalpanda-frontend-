@@ -23,7 +23,6 @@ export class SensorHistorySelectorComponent {
 
   get sensorForm(): FormGroup {
     if (!this._sensorForm) {
-      console.log('get form from formService.form');
       this._sensorForm = this.formService.form;
       this.formService.refreshFormData();
     }
