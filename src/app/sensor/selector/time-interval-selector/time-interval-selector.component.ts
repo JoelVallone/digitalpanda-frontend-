@@ -49,28 +49,12 @@ export class TimeIntervalSelectorComponent {
   toTime: NgbTimeStruct;
 
   constructor(calendar: NgbCalendar, public formService: SensorHistorySelectorFormService) {
-    /**/
     this.setDefaultInterval();
     this.displayDatePicker = true;
   }
 
   private setDefaultInterval() {
-    this.setDefaultDates();
-    this.setDefaultTimes();
-  }
-
-  private setDefaultTimes() {
-    const now: Date = new Date();
-    this.formService.updateToTime(now);
-    this.formService.updateFromTime(now);
-  }
-
-  private setDefaultDates() {
-    const now: Date = new Date();
-    this.fromDate = this.toFormViewDate(now); // calendar.getToday()
-    this.toDate =  this.toFormViewDate(now); // calendar.getNext(calendar.getToday(), 'd', 10);
-    this.updateToDate(this.toDate);
-    this.updateFromDate(this.fromDate);
+    this.formService.setDefaultInterval();
   }
 
   private toFormViewDate(date: Date): NgbDate {
@@ -89,11 +73,15 @@ export class TimeIntervalSelectorComponent {
     this.formService.updateFromDate(this.toStdDate(date));
   }
 
-  public toggleDatePicker() {
+  private fetchDatesFromFormService(): void {
     this.fromDate = this.toFormViewDate(this.formService.getFromDateStd());
     this.toDate =  this.toFormViewDate(this.formService.getToDateStd());
+  }
+
+  public toggleDatePicker() {
+    this.fetchDatesFromFormService();
     if (!this.fromDate || !this.toDate) {
-      this.setDefaultDates();
+      this.setDefaultInterval();
     }
     this.displayDatePicker = !this.displayDatePicker;
   }

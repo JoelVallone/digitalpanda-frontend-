@@ -9,27 +9,26 @@ import { SensorMeasureMetaData, SensorMeasureTypeDetails, SensorMeasureType } fr
 @Injectable()
 export class SensorHistorySelectorFormService {
 
+  private static DEFAULT_INTERVAL_LENGTH_MILLIS: number = 10 * 1000;
+
   public form: FormGroup;
   private _measureTypesByLocationMap = new Map<string, Array<SensorMeasureMetaData>>();
 
-
-  public static toStringTime(date: Date): string {
-    return date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
-  }
-
   constructor(public sensorService: SensorService, private fb: FormBuilder) {
+    const intervalTo: Date = new Date();
+    const intervalFrom: Date = new Date(intervalTo.getTime() - SensorHistorySelectorFormService.DEFAULT_INTERVAL_LENGTH_MILLIS);
     this.form  = this.fb.group({
       sensorsIdentification : this.fb.group({
         locations : this.fb.array([]),
         locationsMeasures: this.fb.array([], (fa) => this.atLeastOneMeasureSelectedValidator(fa))}),
       timeInterval: this.fb.group({
           from: this.fb.group({
-            date: this.fb.control(this.defaultDate(), [Validators.required, (fc) => this.rawDateFormatValidator(fc)]),
-            time: this.fb.control(this.defaultTime(), Validators.required),
+            date: this.fb.control(this.toStringDate(intervalFrom), [Validators.required, (fc) => this.rawDateFormatValidator(fc)]),
+            time: this.fb.control(this.toStringTime(intervalFrom), Validators.required),
           }),
           to: this.fb.group({
-            date: this.fb.control(this.defaultDate(), [Validators.required, (fc) => this.rawDateFormatValidator(fc)]),
-            time: this.fb.control(this.defaultTime(), Validators.required),
+            date: this.fb.control(this.toStringDate(intervalTo), [Validators.required, (fc) => this.rawDateFormatValidator(fc)]),
+            time: this.fb.control(this.toStringTime(intervalTo), Validators.required),
           })
         },
         {
@@ -39,13 +38,28 @@ export class SensorHistorySelectorFormService {
     this.subscribeInternalListeners();
   }
 
-  private defaultDate(): string {
-    return this.toStringDate(new Date());
+  public setDefaultInterval(): void {
+    const intervalTo: Date = new Date();
+    this.updateDate('to', intervalTo);
+    this.updateTime('to', intervalTo);
+
+    const intervalFrom: Date = new Date(intervalTo.getTime() - SensorHistorySelectorFormService.DEFAULT_INTERVAL_LENGTH_MILLIS);
+    this.updateDate('from', intervalFrom);
+    this.updateTime('from', intervalFrom);
   }
 
-  private defaultTime(): any {
-    const date = new Date();
-    const time: string = date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+  public toStringTime(time: Date): string {
+    return time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
+  }
+
+  public parseTime(timeStr: string): Date {
+    if (!timeStr) { return null; }
+    const timeArr: string[] = timeStr.split(':');
+    if (timeArr.length !== 3) { return null; }
+    const time: Date = new Date();
+    time.setHours(+timeArr[0]);
+    time.setMinutes(+timeArr[1]);
+    time.setSeconds(+timeArr[2]);
     return time;
   }
 
@@ -82,21 +96,33 @@ export class SensorHistorySelectorFormService {
     return this.parseDate(this.getDate('from'));
   }
 
-  public timestampPrecedenceValidator(control: AbstractControl): ValidationErrors {
-    const fromDateCg = control.get('from').get('date');
-    const toDateCg = control.get('to').get('date');
-    if (!fromDateCg || !toDateCg) {
-      return null;
-    }
-    const fromDate: Date = this.parseDate(fromDateCg.value);
-    const toDate: Date = this.parseDate(toDateCg.value);
-    if (!fromDate || !toDate) {
-      return null;
-    }
-    if (fromDate > toDate) {
+  public timestampPrecedenceValidator(timeIntervalControl: AbstractControl): ValidationErrors {
+    const fromMillis = this.getTimestampMillis('from', timeIntervalControl);
+    const toMillis = this.getTimestampMillis('to', timeIntervalControl);
+    if (fromMillis && toMillis && ((fromMillis + 1000) > toMillis)) {
       return {timestampPrecedence: true};
     }
     return null;
+  }
+
+  public getTimestampMillis(fromOrTo: string, timeIntervalControl?: AbstractControl): number {
+    if (!timeIntervalControl) {
+      timeIntervalControl = this.timeInterval;
+    }
+
+    const dateCg = timeIntervalControl.get(fromOrTo).get('date');
+    const date: Date = this.parseDate(dateCg.value);
+    if (!date) { return null; }
+
+    const timeCg = timeIntervalControl.get(fromOrTo).get('time');
+    const time: Date = this.parseTime(timeCg.value);
+    if (!time) { return null; }
+
+    date.setHours(time.getHours());
+    date.setMinutes(time.getMinutes());
+    date.setSeconds(time.getSeconds());
+
+    return date.getTime();
   }
 
   public rawDateFormatValidator(control: AbstractControl): ValidationErrors {
@@ -157,7 +183,7 @@ export class SensorHistorySelectorFormService {
   private updateTime(toOrFrom: string, date: Date): void {
     const dateFc: FormControl = this.timeInterval.get(toOrFrom).get('time') as FormControl;
     if (date) {
-      dateFc.setValue(SensorHistorySelectorFormService.toStringTime(date));
+      dateFc.setValue(this.toStringTime(date));
     } else {
       dateFc.reset();
     }
@@ -214,20 +240,24 @@ export class SensorHistorySelectorFormService {
   }
 
   private setLocationMeasures(measureTypesByLocationMap: Map<string, Array<SensorMeasureMetaData>>): void {
-    this.locationsMeasures.controls.splice(0);
+    const measureTypeNameSelectionByLocation:  Map<string, Set<string>> = this.extractMeasureTypeNameSelectionByLocation();
+    this.clearLocationsMeasures();
     measureTypesByLocationMap.forEach(
       (measureTypes: SensorMeasureMetaData[], location: string) => {
         const locationMeasures: FormGroup =  this.fb.group({
-          location,
-          measures : this.fb.array([])
-        });
+            location,
+            measures : this.fb.array([])
+          });
 
         measureTypes.forEach((measureKey) => {
+          const measureTypeName = SensorMeasureMetaData.getTypeDetail(measureKey.type).typeName;
+          const previouslySelected: boolean = measureTypeNameSelectionByLocation.get(location) ?
+          measureTypeNameSelectionByLocation.get(location).has(measureTypeName) : false;
           (locationMeasures.get('measures') as FormArray).push(
             this.fb.group({
               measureKey,
-              measureTypeName : SensorMeasureMetaData.getTypeDetail(measureKey.type).typeName,
-              isSelected: this.fb.control(false)
+              measureTypeName,
+              isSelected: this.fb.control(false || previouslySelected)
             }));
         });
 
@@ -244,6 +274,13 @@ export class SensorHistorySelectorFormService {
       this.updateSelectableLocations(this.getAllStoredLocations(), true);
     } else {
       this.updateSelectableLocations(this.getAllStoredLocations(), false);
+      this.clearLocationsMeasures();
+    }
+  }
+
+  public clearLocationsMeasures(): void {
+    while (this.locationsMeasures.length !== 0) {
+      this.locationsMeasures.removeAt(0);
     }
   }
 
@@ -252,13 +289,28 @@ export class SensorHistorySelectorFormService {
       console.error('Invalid form' + JSON.stringify(this.form.errors));
       return;
     }
-    const selectedMeasures: Array<SensorMeasureMetaData> = this.extractMeasureSelection();
+    const selectedMeasures: Array<SensorMeasureMetaData> = this.extractMeasureSelectionList();
     console.log('SensorHistorySelectorFormService ~> selectedMeasures: '
       + JSON.stringify(selectedMeasures));
     // TODO: extract timesmap intervall & emit new data to form result consumers
   }
 
-  public extractMeasureSelection(): Array<SensorMeasureMetaData> {
+  public extractMeasureTypeNameSelectionByLocation(): Map<string, Set<string>> {
+    const locationsMeasuresSelection = new Map<string, Set<string>>();
+    (this.locationsMeasures as FormArray).controls.forEach(locationMeasures => {
+        const locationMeasuresSelection = new Set<string>();
+        (locationMeasures.get('measures') as FormArray).controls.forEach(measure => {
+          if (measure.get('isSelected').value) {
+            locationMeasuresSelection.add(measure.get('measureTypeName').value);
+          }
+        });
+        locationsMeasuresSelection.set(locationMeasures.get('location').value, locationMeasuresSelection);
+    });
+
+    return locationsMeasuresSelection;
+  }
+
+  public extractMeasureSelectionList(): Array<SensorMeasureMetaData> {
     const measureKeysSelection: Array<SensorMeasureMetaData> = [];
     this.locationsMeasures.controls.forEach(locationMeasures => {
       (locationMeasures.get('measures') as FormArray).controls.forEach(measure => {

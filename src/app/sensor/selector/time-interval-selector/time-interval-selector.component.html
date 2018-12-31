@@ -1,8 +1,11 @@
 <div [formGroup]="timeIntervalForm">
 
     <div>
-
-
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="toggleDatePicker()" type="button">
+            {{ displayDatePicker ?  'Manual date input.' : 'Use calendar' }}
+          </button>
+        </div>
         <div formGroupName="from">
             <label for="fromDate">From  </label>
             <input *ngIf="!displayDatePicker" id="fromDate" class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate" formControlName="date">
@@ -10,17 +13,9 @@
                 <div *ngIf="timeIntervalForm.get('from').get('date').errors.rawDateFormat">Expected date format: yyyy-mm-dd</div>
             </div>
             <ngb-timepicker formControlName="time" [seconds]="true" [hourStep]="1" [minuteStep]="1" [secondStep]="1"></ngb-timepicker>
-        </div>
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" (click)="toggleDatePicker()" type="button">
-                {{ displayDatePicker ?  'Manual input.' : 'Use calendar' }}
-              </button>
-            <button class="btn btn-outline-secondary" (click)="setDefaultDates()" type="button">
-                    Rst. date
-                  </button>
-            <button class="btn btn-outline-secondary" (click)="setDefaultTimes()" type="button">
-                            Rst. time
-                          </button>
+            <div *ngIf="timeIntervalForm.get('from').get('time').errors">
+                <div *ngIf="timeIntervalForm.get('from').get('time').errors.required">Time is required with format: hh mm ss</div>
+            </div>
         </div>
         <ngb-datepicker *ngIf="displayDatePicker" #dp (select)="onDateSelection($event)" [displayMonths]="1" [dayTemplate]="t" outsideDays="hidden">
             <ng-template #t let-date let-focused="focused">
@@ -36,9 +31,17 @@
                 <div *ngIf="timeIntervalForm.get('to').get('date').errors.rawDateFormat">Expected date format: yyyy-mm-dd</div>
             </div>
             <ngb-timepicker formControlName="time" [seconds]="true" [hourStep]="1" [minuteStep]="1" [secondStep]="1"></ngb-timepicker>
+            <div *ngIf="timeIntervalForm.get('to').get('time').errors">
+                <div *ngIf="timeIntervalForm.get('to').get('time').errors.required">Time is required with format: hh mm ss</div>
+            </div>
         </div>
         <div *ngIf="timeIntervalForm.errors">
-            <div *ngIf="timeIntervalForm.errors.timestampPrecedence">Start interval before end interval</div>
+            <div *ngIf="timeIntervalForm.errors.timestampPrecedence">The time interval must be of at least on second</div>
+        </div>
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="setDefaultInterval()" type="button">
+                  Rst. interval
+                </button>
         </div>
 
     </div>
