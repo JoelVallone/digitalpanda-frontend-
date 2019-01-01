@@ -1,14 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { SensorService } from './../../sensor.service';
 import { SensorMeasuresHistoryDto, SensorMeasureMetaData, SensorMeasureType,
           SensorMeasureTypeDetails, SensorMeasureMean} from './../../sensor.classes';
-
+import { SensorHistorySelection } from './../../selector/sensor-history-selector-form.service';
 @Component({
   selector: 'app-debug-display-history',
   templateUrl: './debug-display.history.component.html',
   styleUrls: ['./debug-display.history.component.scss']
 })
-export class DebugDisplayHistoryComponent implements OnInit {
+export class DebugDisplayHistoryComponent implements OnChanges {
+
+  @Input() sensorHistorySelection: SensorHistorySelection;
 
   public measureLoaded: boolean;
   public sensor: SensorMeasureMetaData;
@@ -23,19 +25,37 @@ export class DebugDisplayHistoryComponent implements OnInit {
     this.measureLoaded = false;
   }
 
-  ngOnInit(): void {
-    this.sensor = new SensorMeasureMetaData('panda-home', SensorMeasureType.TEMPERATURE);
-
-    this.measureTypeDetails = SensorMeasureMetaData.getTypeDetail(this.sensor.type);
-    this.startTimeMillisIncl = 1545695940000;
-    this.endTimeMillisExcl =   1545696600000;
-    this.dataPointCount = 500;
-
-    this.loadAndSetMeasureCallback(this);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.sensorHistorySelection && changes.sensorHistorySelection.currentValue) {
+      const current =  changes.sensorHistorySelection.currentValue;
+      const previous =  changes.sensorHistorySelection.previousValue;
+      console.log('previous : ' + JSON.stringify(previous));
+      console.log('current : ' + JSON.stringify(current));
+      if ( JSON.stringify(current) === JSON.stringify(previous)) {
+          return;
+      }
+      this.updateDisplayData(changes.sensorHistorySelection.currentValue, 500);
+      this.loadAndSetMeasureCallback(this, changes.sensorHistorySelection.currentValue, 500);
+    }
   }
 
-  loadAndSetMeasureCallback(that: DebugDisplayHistoryComponent): void {
-    that.sensorService.loadHistoryMeasures(that.sensor, that.startTimeMillisIncl, that.endTimeMillisExcl, that.dataPointCount)
+  private updateDisplayData(sensorHistorySelection: SensorHistorySelection, dataPointCount: number) {
+    this.sensor = sensorHistorySelection.measureSelection[0];
+    this.measureTypeDetails = SensorMeasureMetaData.getTypeDetail(this.sensor.type);
+    this.startTimeMillisIncl = sensorHistorySelection.fromMillis;
+    this.endTimeMillisExcl =   sensorHistorySelection.toMillis;
+    this.dataPointCount = dataPointCount;
+  }
+
+  loadAndSetMeasureCallback(
+    that: DebugDisplayHistoryComponent, sensorHistorySelection: SensorHistorySelection, dataPointCount: number): void {
+
+
+    that.sensorService.loadHistoryMeasures(
+      sensorHistorySelection.measureSelection[0],
+      sensorHistorySelection.fromMillis,
+      sensorHistorySelection.toMillis,
+      dataPointCount)
     .subscribe((measuresIntervalsDto) => {
       that.measuresIntervals = new Array(measuresIntervalsDto.length);
       for (let i = 0; i < measuresIntervalsDto.length; i++) {

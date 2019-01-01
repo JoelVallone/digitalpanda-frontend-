@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 import { SensorService } from '../sensor.service';
 import { SensorMeasureMetaData, SensorMeasureTypeDetails, SensorMeasureType } from './../sensor.classes';
 
+export class SensorHistorySelection {
+  constructor(public fromMillis: number, public toMillis: number, public measureSelection: Array<SensorMeasureMetaData>) {}
+}
 
 @Injectable()
 export class SensorHistorySelectorFormService {
@@ -189,17 +192,10 @@ export class SensorHistorySelectorFormService {
     }
   }
 
-
-  public refreshFormData(): FormGroup {
-    this.sensorService
-      .loadMeasurekeys()
-      .subscribe((backendMeasureKeys) => this.updateFormData(backendMeasureKeys));
-    return this.form;
-  }
-
-  private updateFormData(newMeasureKeys: Array<SensorMeasureMetaData>) {
+  public updateFormData(newMeasureKeys: Array<SensorMeasureMetaData>): FormGroup {
     this.updateLocalSensorCache(newMeasureKeys);
     this.updateSelectableLocations(this.getAllStoredLocations(), false);
+    return this.form;
   }
 
   private updateLocalSensorCache(newMeasureKeys: Array<SensorMeasureMetaData>) {
@@ -284,17 +280,6 @@ export class SensorHistorySelectorFormService {
     }
   }
 
-  public emitNewSubmission(): void {
-    if (!this.canSubmit()) {
-      console.error('Invalid form' + JSON.stringify(this.form.errors));
-      return;
-    }
-    const selectedMeasures: Array<SensorMeasureMetaData> = this.extractMeasureSelectionList();
-    console.log('SensorHistorySelectorFormService ~> selectedMeasures: '
-      + JSON.stringify(selectedMeasures));
-    // TODO: extract timesmap intervall & emit new data to form result consumers
-  }
-
   public extractMeasureTypeNameSelectionByLocation(): Map<string, Set<string>> {
     const locationsMeasuresSelection = new Map<string, Set<string>>();
     (this.locationsMeasures as FormArray).controls.forEach(locationMeasures => {
@@ -322,10 +307,6 @@ export class SensorHistorySelectorFormService {
     return measureKeysSelection;
   }
 
-  public canSubmit(): Boolean {
-    return this.form.valid;
-  }
-
   private atLeastOneMeasureSelectedValidator(locationsMeasures: AbstractControl): ValidationErrors {
     const atLeastOneSelected: Boolean = (locationsMeasures as FormArray).controls.length !== 0
     && (locationsMeasures as FormArray).controls
@@ -333,5 +314,20 @@ export class SensorHistorySelectorFormService {
             (locationMeasures.get('measures') as FormArray).controls
                 .some(measure => measure.get('isSelected').value));
     return atLeastOneSelected ? null : {atLeastOneMeasureSelected : true};
+  }
+
+  public canSubmit(): Boolean {
+    return this.form.valid;
+  }
+
+  public extractSubmission(): SensorHistorySelection {
+    if (!this.canSubmit()) {
+      console.error('Invalid form' + JSON.stringify(this.form.errors));
+      return;
+    }
+    return new SensorHistorySelection(
+                this.getTimestampMillis('from'),
+                this.getTimestampMillis('to'),
+                this.extractMeasureSelectionList());
   }
 }

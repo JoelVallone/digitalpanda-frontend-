@@ -6,9 +6,9 @@
 </p>
 <div id="sensor-selection" [ngbCollapse]="isSelectionCollapsed">
     <div class="card">
-        <app-sensor-history-selector> </app-sensor-history-selector>
+        <app-sensor-history-selector (sensorHistorySelection)=onSensorHistorySelection($event)> </app-sensor-history-selector>
     </div>
 </div>
 
 
-<app-debug-display-history *ngIf="displayData"></app-debug-display-history>
+<app-debug-display-history *ngIf="displayData" [sensorHistorySelection]=sensorHistorySelection></app-debug-display-history>

@@ -1,9 +1,14 @@
 <div style="margin-top: 30px">
     <h4>Request:</h4>
     <ul>
-        <li>Location: {{sensor.location}}</li>
-        <li>Measure Type: {{measureTypeDetails.typeName}}</li>
-        <li>Requested interval: [{{startTimeMillisIncl | date:'yyyy-MM-dd T HH:mm:ss+SSS'}}; {{endTimeMillisExcl | date:'yyyy-MM-dd T HH:mm:ss+SSS'}}]</li>
+        <li>Location: {{sensor?.location}}</li>
+        <li>Measure Type: {{measureTypeDetails?.typeName}}</li>
+        <li>Requested interval:
+            <ul>
+                <li>From (incl.): {{startTimeMillisIncl | date:'yyyy-MM-dd T HH:mm:ss+SSS'}}</li>
+                <li>To (excl.): {{endTimeMillisExcl | date:'yyyy-MM-dd T HH:mm:ss+SSS'}}</li>
+            </ul>
+        </li>
         <li>Target datapoints: {{dataPointCount}}</li>
     </ul>
 </div>
@@ -25,5 +30,8 @@
                 <td>{{measures.value}}</td>
             </tr>
         </table>
+    </div>
+    <div *ngIf="measuresIntervals && measuresIntervals.length === 0">
+        No data found
     </div>
 </div>

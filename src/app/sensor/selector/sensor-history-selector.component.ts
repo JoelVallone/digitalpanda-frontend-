@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { SensorService } from './../sensor.service';
 import { SensorMeasureMetaData } from './../sensor.classes';
-import { SensorHistorySelectorFormService } from './sensor-history-selector-form.service';
+import { SensorHistorySelectorFormService, SensorHistorySelection } from './sensor-history-selector-form.service';
 import { FormGroup, FormsModule } from '@angular/forms';
 
 @Component({
@@ -15,17 +15,20 @@ import { FormGroup, FormsModule } from '@angular/forms';
 })
 export class SensorHistorySelectorComponent {
 
+  @Output() public sensorHistorySelection =  new EventEmitter<SensorHistorySelection>();
+
   private measureTypesByLocationMap = new Map<string, Array<SensorMeasureMetaData>>();
   private _sensorForm: FormGroup;
 
-  constructor(public formService: SensorHistorySelectorFormService) {}
+  constructor(public formService: SensorHistorySelectorFormService, public sensorService: SensorService) {
+    this._sensorForm = this.formService.form;
+    this.sensorService
+      .loadMeasurekeys()
+      .subscribe((backendMeasureKeys) => this.formService.updateFormData(backendMeasureKeys));
+  }
 
 
   get sensorForm(): FormGroup {
-    if (!this._sensorForm) {
-      this._sensorForm = this.formService.form;
-      this.formService.refreshFormData();
-    }
     return this._sensorForm;
   }
 
@@ -34,6 +37,6 @@ export class SensorHistorySelectorComponent {
   }
 
   onSubmit() {
-    return this.formService.emitNewSubmission();
+    this.sensorHistorySelection.emit(this.formService.extractSubmission());
   }
 }
