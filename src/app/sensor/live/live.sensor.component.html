@@ -1,2 +1,8 @@
-<h3>Live monitoring</h3>
-<app-single-value-latest *ngFor="let measureKey of measureKeys | async" [sensor]="measureKey"></app-single-value-latest>
+<div class="container text-center" style="margin-bottom: 15px;">
+    <div class="row">
+        <div class="col-md-12">
+            <h3> Live monitoring</h3>
+        </div>
+    </div>
+    <app-single-value-latest *ngFor="let measureKey of measureKeys | async" [sensor]="measureKey"></app-single-value-latest>
+</div>

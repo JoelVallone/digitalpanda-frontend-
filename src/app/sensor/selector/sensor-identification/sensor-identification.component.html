@@ -38,7 +38,7 @@
             </li>
         </ul>
     </div>
-    <div *ngIf="sensorsIdentificationForm.get('locationsMeasures').errors">
+    <div class="text-center" *ngIf="sensorsIdentificationForm.get('locationsMeasures').errors">
         <div class="alert alert-danger" role="alert" *ngIf="sensorsIdentificationForm.get('locationsMeasures').errors.atLeastOneMeasureSelected">Select at least one measure type at a location.</div>
     </div>
 </div>
