@@ -1,28 +1,44 @@
-<div [formGroup]="sensorsIdentificationForm">
-    <button style="margin : 5px" class="btn btn-warning" type="button" (click)="toggleAllLocations()">
-    {{ isMeasureTypesByLocationEmtpy() ? 'Select all locations' : 'Clear all locations' }}
-  </button>
-
-    <div formArrayName="locations" *ngFor="let location of sensorsIdentificationForm.get('locations').controls; let i=index " class="btn-group btn-group-toggle">
-        <label [formGroupName]="i" class="btn btn-outline-secondary" ngbButtonLabel>
-        <input type="checkbox" formControlName="isSelected" ngbButton>{{location.get('location').value}}
-      </label>
-    </div>
-    <div formArrayName="locationsMeasures" *ngFor="let locationMeasures of sensorsIdentificationForm.get('locationsMeasures').controls; let i=index">
-        <div [formGroupName]="i" class="card" style="margin-top: 10px">
-            <h5 class="card-header">Location: {{locationMeasures.get('location').value}}</h5>
-            <div class="card-body" formArrayName="measures">
-                <div class="card-text">
-                    <div *ngFor="let measure of locationMeasures.get( 'measures').controls; let j=index" class="btn-group btn-group-toggle">
-                        <label [formGroupName]="j" class="btn btn-outline-secondary" ngbButtonLabel>
-                          <input type="checkbox" formControlName="isSelected" ngbButton>{{measure.get('measureTypeName').value}}
-                        </label>
-                    </div>
-                </div>
+<div class="card" [formGroup]="sensorsIdentificationForm">
+    <h5 class="card-header">Measure selection</h5>
+    <div class="card-body">
+        <h5 class="card-title">
+            Location
+        </h5>
+        <div class="card-text text-center" style="margin-bottom : 10px;">
+            <button class="btn btn-outline-warning btn-sm" type="button" (click)="toggleAllLocations()">
+                {{ isMeasureTypesByLocationEmtpy() ? 'All locations' : 'Clear locations' }}
+                </button>
+        </div>
+        <div class="card-text text-center">
+            <div formArrayName="locations" *ngFor="let location of sensorsIdentificationForm.get('locations').controls; let i=index " class="btn-group btn-group-toggle">
+                <label [formGroupName]="i" class="btn btn-outline-secondary btn-sm" ngbButtonLabel>
+            <input type="checkbox" formControlName="isSelected" ngbButton>{{location.get('location').value}}
+          </label>
             </div>
         </div>
+        <div style="margin-top : 30px;" *ngIf="sensorsIdentificationForm.get('locationsMeasures').length !== 0" class="card-text">
+            <h5> Measure type </h5>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item" formArrayName="locationsMeasures" *ngFor="let locationMeasures of sensorsIdentificationForm.get('locationsMeasures').controls; let i=index">
+                <div [formGroupName]="i" class="text-center">
+                    <div style="margin-bottom : 5px;">
+                        <i>{{locationMeasures.get('location').value}}</i>
+                    </div>
+                    <div formArrayName="measures">
+                        <div>
+                            <div *ngFor="let measure of locationMeasures.get( 'measures').controls; let j=index" class="btn-group btn-group-toggle">
+                                <label [formGroupName]="j" class="btn btn-outline-secondary  btn-sm" ngbButtonLabel>
+                              <input type="checkbox" formControlName="isSelected" ngbButton>{{measure.get('measureTypeName').value}}
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
     <div *ngIf="sensorsIdentificationForm.get('locationsMeasures').errors">
-        <div *ngIf="sensorsIdentificationForm.get('locationsMeasures').errors.atLeastOneMeasureSelected">Must select at least one measure type at a location.</div>
+        <div class="alert alert-danger" role="alert" *ngIf="sensorsIdentificationForm.get('locationsMeasures').errors.atLeastOneMeasureSelected">Select at least one measure type at a location.</div>
     </div>
 </div>

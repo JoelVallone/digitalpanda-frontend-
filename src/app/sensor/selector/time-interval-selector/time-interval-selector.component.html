@@ -1,48 +1,62 @@
-<div [formGroup]="timeIntervalForm">
-
-    <div>
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" (click)="toggleDatePicker()" type="button">
-            {{ displayDatePicker ?  'Manual date input.' : 'Use calendar' }}
-          </button>
+<div class="card" [formGroup]="timeIntervalForm">
+    <h5 class="card-header">Time interval selection</h5>
+    <div class="card-body">
+        <div style="margin: 15px;" class="card-text text-center">
+            <button class="btn btn-outline-warning  btn-sm" (click)="setDefaultInterval()" type="button">
+                  Reset interval
+                </button>
         </div>
         <div formGroupName="from">
-            <label for="fromDate">From  </label>
-            <input *ngIf="!displayDatePicker" id="fromDate" class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate" formControlName="date">
-            <div *ngIf="timeIntervalForm.get('from').get('date').errors && !displayDatePicker">
-                <div *ngIf="timeIntervalForm.get('from').get('date').errors.rawDateFormat">Expected date format: yyyy-mm-dd</div>
-            </div>
-            <ngb-timepicker formControlName="time" [seconds]="true" [hourStep]="1" [minuteStep]="1" [secondStep]="1"></ngb-timepicker>
-            <div *ngIf="timeIntervalForm.get('from').get('time').errors">
-                <div *ngIf="timeIntervalForm.get('from').get('time').errors.required">Time is required with format: hh mm ss</div>
+            <h5 for="fromDate" class="card-title">
+                From
+            </h5>
+            <div class="card-text text-center">
+                <input *ngIf="!displayDatePicker" id="fromDate" class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate" formControlName="date">
+                <div *ngIf="timeIntervalForm.get('from').get('date').errors && !displayDatePicker">
+                    <div class="alert alert-danger" role="alert" *ngIf="timeIntervalForm.get('from').get('date').errors.rawDateFormat">Expected date format: yyyy-mm-dd</div>
+                </div>
+                <ngb-timepicker formControlName="time" [seconds]="true" [hourStep]="1" [minuteStep]="1" [secondStep]="1"></ngb-timepicker>
+
+                <div class="alert alert-danger" *ngIf="timeIntervalForm.get('from').get('time').errors">
+                    <div *ngIf="timeIntervalForm.get('from').get('time').errors.required">Expected time format: hh mm ss</div>
+                </div>
             </div>
         </div>
-        <ngb-datepicker *ngIf="displayDatePicker" #dp (select)="onDateSelection($event)" [displayMonths]="1" [dayTemplate]="t" outsideDays="hidden">
-            <ng-template #t let-date let-focused="focused">
-                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)" [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+        <div style="margin: 20px;" class="text-center">
+            <div style="margin-bottom: 15px">
+                <button class="btn btn-outline-warning btn-sm" (click)="toggleDatePicker()" type="button">
+            {{ displayDatePicker ?  'Manual date input.' : 'Use calendar' }}
+          </button>
+            </div>
+            <div class="text-center" *ngIf="displayDatePicker">
+                <ngb-datepicker *ngIf="displayDatePicker" #dp (select)="onDateSelection($event)" [displayMonths]="1" [dayTemplate]="t" outsideDays="hidden">
+                    <ng-template #t let-date let-focused="focused">
+                        <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)" [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
             {{ date.day }}
           </span>
-            </ng-template>
-        </ngb-datepicker>
+                    </ng-template>
+                </ngb-datepicker>
+                <br>
+                <i>Pick from and to dates</i>
+            </div>
+        </div>
         <div formGroupName="to">
-            <label for="toDate"> To  </label>
-            <input *ngIf="!displayDatePicker" id="toDate" class="form-control" placeholder="yyyy-mm-dd" name="dpToDate" formControlName="date">
-            <div *ngIf="timeIntervalForm.get('to').get('date').errors && !displayDatePicker">
-                <div *ngIf="timeIntervalForm.get('to').get('date').errors.rawDateFormat">Expected date format: yyyy-mm-dd</div>
+            <h5 for="toDate" class="card-title">
+                To
+            </h5>
+            <div class="card-text text-center">
+                <input *ngIf="!displayDatePicker" id="toDate" class="form-control" placeholder="yyyy-mm-dd" name="dpToDate" formControlName="date">
+                <div *ngIf="timeIntervalForm.get('to').get('date').errors && !displayDatePicker">
+                    <div *ngIf="timeIntervalForm.get('to').get('date').errors.rawDateFormat">Expected date format: yyyy-mm-dd</div>
+                </div>
             </div>
             <ngb-timepicker formControlName="time" [seconds]="true" [hourStep]="1" [minuteStep]="1" [secondStep]="1"></ngb-timepicker>
             <div *ngIf="timeIntervalForm.get('to').get('time').errors">
-                <div *ngIf="timeIntervalForm.get('to').get('time').errors.required">Time is required with format: hh mm ss</div>
+                <div *ngIf="timeIntervalForm.get('to').get('time').errors.required">Expected time format: hh mm ss</div>
             </div>
         </div>
-        <div *ngIf="timeIntervalForm.errors">
-            <div *ngIf="timeIntervalForm.errors.timestampPrecedence">The time interval must be of at least on second</div>
-        </div>
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" (click)="setDefaultInterval()" type="button">
-                  Rst. interval
-                </button>
-        </div>
-
+    </div>
+    <div *ngIf="timeIntervalForm.errors">
+        <div *ngIf="timeIntervalForm.errors.timestampPrecedence">The time interval must be of at least on second</div>
     </div>
 </div>

@@ -55,6 +55,7 @@ export class TimeIntervalSelectorComponent {
 
   private setDefaultInterval() {
     this.formService.setDefaultInterval();
+    this.fetchDatesFromFormService();
   }
 
   private toFormViewDate(date: Date): NgbDate {
