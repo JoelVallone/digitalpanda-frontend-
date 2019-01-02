@@ -14,13 +14,12 @@ import {GreetingService} from './home/greeting.service';
 import {HttpModule} from '@angular/http';
 
 import {NavBarComponent} from './ui/navbar/navbar.component';
-import {AboutComponent} from './about/about.component';
 import {HomeComponent} from './home/home.component';
 import {SensorModule} from './sensor/sensor.module';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
 @NgModule({
-  declarations: [AppComponent, NavBarComponent, AboutComponent, HomeComponent],
+  declarations: [AppComponent, NavBarComponent, HomeComponent],
   imports     : [BrowserModule, FormsModule, HttpModule, AppRoutingModule, NgbModule, SensorModule],
   providers   : [GreetingService, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap   : [AppComponent]

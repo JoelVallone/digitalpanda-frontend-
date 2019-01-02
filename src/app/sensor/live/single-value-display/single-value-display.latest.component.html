@@ -1,21 +1,14 @@
-<div *ngIf=measureLoaded class="sensor-box">
-    <table>
-        <tr>
-            <th colspan="2" style="height : 20px; text-align : center">{{measureTypeDetails.typeName}}</th>
-        </tr>
-        <tr>
-            <td style="font-weight: bold">Location: </td>
-            <td>{{sensor.location}}</td>
-        </tr>
-        <tr>
-            <td style="font-weight: bold">Time: </td>
-            <td *ngIf="measure.timestamp">{{measure.timestamp | date:'HH:mm:ss'}}</td>
-            <td *ngIf="!measure.timestamp">-</td>
-        </tr>
-        <tr>
-            <td style="font-weight: bold">Value: </td>
-            <td *ngIf="measure.value">{{measure.value | number : '1.2-2'}} [{{measureTypeDetails.unitSymbol}}]</td>
-            <td *ngIf="!measure.value">-</td>
-        </tr>
-    </table>
+<div *ngIf=measureLoaded class="card" style="max-width: 350px; margin: auto;">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-6 text-left"><b>{{measureTypeDetails.typeName}}</b></div>
+            <div class="col-6 text-right"><b>{{sensor.location}}</b></div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-5 text-left">{{ measure?.value | number : '1.2-2' }} {{[measureTypeDetails.unitSymbol]}}</div>
+            <div class="col-7 text-left">{{ measure?.timestamp | date:'yyyy-MM-dd HH:mm:ss' : '-' }}</div>
+        </div>
+    </div>
 </div>
