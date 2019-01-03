@@ -5,14 +5,15 @@ import { Greeting } from './greeting.classes';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
   callerName: string;
   greeting: Greeting;
 
   constructor(public greetingService: GreetingService) {
-    this.callerName = 'frontend';
+    this.callerName = 'visitor';
     this.greeting = new Greeting(0, 'nothing');
   }
 

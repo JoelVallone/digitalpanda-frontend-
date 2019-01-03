@@ -1,0 +1,17 @@
+.thumbnail {
+    position: relative;
+}
+
+.caption {
+    position: absolute;
+    top: -19%;
+    left: 52%;
+    padding-top: 15px;
+    width: 178px;
+    height: 97px;
+}
+
+.dialog-background {
+    background-image: url('/assets/images/bulle.jpg');
+    background-size: 100% 100%;
+}
