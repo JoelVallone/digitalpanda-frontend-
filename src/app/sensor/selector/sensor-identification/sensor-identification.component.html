@@ -4,10 +4,17 @@
         <h5 class="card-title">
             Location
         </h5>
-        <div class="card-text text-center" style="margin-bottom : 10px;">
-            <button class="btn btn-outline-warning btn-sm" type="button" (click)="toggleAllLocations()">
-                {{ isMeasureTypesByLocationEmtpy() ? 'All locations' : 'Clear locations' }}
+        <div class="card-text" style="margin-bottom : 10px;">
+            <div *ngIf="isMeasureTypesByLocationEmtpy()" class="text-left">
+                <button class="btn btn-outline-success btn-sm" type="button" (click)="toggleAllLocations()">
+                    All locations
                 </button>
+            </div>
+            <div *ngIf="!isMeasureTypesByLocationEmtpy()" class="text-right">
+                <button class="btn btn-outline-danger btn-sm" type="button" (click)="toggleAllLocations()">
+                    Clear locations
+                </button>
+            </div>
         </div>
         <div class="card-text text-center">
             <div formArrayName="locations" *ngFor="let location of sensorsIdentificationForm.get('locations').controls; let i=index " class="btn-group btn-group-toggle">

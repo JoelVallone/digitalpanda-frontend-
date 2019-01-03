@@ -3,13 +3,20 @@
         <h5>Location</h5>
     </div>
 </div>
+<div class="row" style="margin-bottom : 10px;">
+    <div class="col-6 text-left">
+        <button *ngIf="isSelectionEmpty()" class="btn btn-outline-success btn-sm" type="button" (click)="toggleAllLocations()">
+             Select all
+            </button>
+    </div>
+    <div class="col-6 text-right">
+        <button *ngIf="!isSelectionEmpty()" class="btn btn-outline-danger btn-sm" type="button" (click)="toggleAllLocations()">
+           Clear all
+          </button>
+    </div>
+</div>
 <div class="row">
     <div class="col-12 text-center">
-        <div style="margin-bottom : 10px;">
-            <button class="btn btn-outline-warning btn-sm" type="button" (click)="toggleAllLocations()">
-              {{ isSelectionEmpty() ? 'Select all' : 'Clear all' }}
-            </button>
-        </div>
         <div class="btn-group btn-group-toggle" *ngFor="let selectableLocation of selectableLocations | keyvalue">
             <label class="btn btn-outline-primary btn-sm" ngbButtonLabel>
             <input type="checkbox" ngbButton [ngModel]="selectableLocation.value" (click)="toggleLocation(selectableLocation.key)" >{{selectableLocation.key}}

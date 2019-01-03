@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-12 text-left small">
                     <i>
-                        <span *ngIf="viewMeasure.isLoaded">{{ viewMeasure.measure.timestamp | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                        <span *ngIf="viewMeasure.isLoaded">{{ viewMeasure.measure.timestamp | date:'yyyy-MM-dd'}} &nbsp;&nbsp;&nbsp;&nbsp; {{ viewMeasure.measure.timestamp | date:'HH:mm:ss'}}</span>
                         <span *ngIf="!viewMeasure.isLoaded">-</span>
                     </i>
                 </div>
