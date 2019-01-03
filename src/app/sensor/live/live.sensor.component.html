@@ -1,8 +1,12 @@
-<div class="container">
+<div class="page-box">
+    <app-page-title title="Live monitoring">
+    </app-page-title>
     <div class="row">
-        <div class="col-12  text-center" style="margin-bottom: 15px;">
-            <h3> Live monitoring</h3>
+        <div class="col-12 text-center">
+            <div style="max-width: 400px; margin: auto;">
+                <app-location-values-latest *ngFor="let measureKeysForLocation of measureKeysByLocation | async | keyvalue" [location]="measureKeysForLocation.key" [sensorKeys]="measureKeysForLocation.value">
+                </app-location-values-latest>
+            </div>
         </div>
     </div>
 </div>
-<app-single-value-latest *ngFor="let measureKey of measureKeys | async" [sensor]="measureKey"></app-single-value-latest>

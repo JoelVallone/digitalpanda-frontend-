@@ -6,7 +6,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { UiModule } from '../ui/ui.module';
 import { SingleValueDisplayLatestComponent } from './live/single-value-display/single-value-display.latest.component';
+import { LocationValuesDisplayLatestComponent } from './live/location-values-display//location-values-display.latest.component';
 import { DebugDisplayHistoryComponent } from './history/debug-display/debug-display.history.component';
 import { LiveSensorComponent } from './live/live.sensor.component';
 import { HistorySensorComponent } from './history/history.sensor.component';
@@ -22,13 +24,15 @@ import { TimeIntervalSelectorComponent } from './selector/time-interval-selector
     ReactiveFormsModule,
     FormsModule,
     BrowserModule,
-    NgbModule
+    NgbModule,
+    UiModule
   ],
   providers: [
     SensorService, SensorHistorySelectorFormService
   ],
   declarations: [
-    SingleValueDisplayLatestComponent, DebugDisplayHistoryComponent, LiveSensorComponent, HistorySensorComponent,
+    SingleValueDisplayLatestComponent, LocationValuesDisplayLatestComponent,
+    DebugDisplayHistoryComponent, LiveSensorComponent, HistorySensorComponent,
     SensorIdentificationComponent, TimeIntervalSelectorComponent, SensorHistorySelectorComponent
   ],
   exports: [

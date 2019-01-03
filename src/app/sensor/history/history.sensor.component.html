@@ -1,22 +1,21 @@
-<div>
-    <div class="container text-center" style="margin-bottom: 15px;">
-        <div class="row">
-            <div class="col-md-12">
-                <h3> Historical data</h3>
+<div class="page-box">
+    <app-page-title title="Historical data">
+    </app-page-title>
+    <div>
+        <div class="container text-center" style="margin-bottom: 15px;">
+            <div class="row" style="margin-bottom: 15px">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-outline-warning" (click)="toggleSensorSelection()" [attr.aria-expanded]="!isSelectionCollapsed" aria-controls="collapseExample">
+              {{ isSelectionCollapsed ? sensorSelectionText : 'Hide data selection' }}
+            </button>
+                </div>
             </div>
         </div>
-        <div class="row" style="margin-bottom: 15px">
-            <div class="col-md-12">
-                <button type="button" class="btn btn-outline-warning" (click)="toggleSensorSelection()" [attr.aria-expanded]="!isSelectionCollapsed" aria-controls="collapseExample">
-          {{ isSelectionCollapsed ? sensorSelectionText : 'Hide data selection' }}
-        </button>
+        <div id="sensor-selection" [ngbCollapse]="isSelectionCollapsed">
+            <div class="card border border-primary">
+                <app-sensor-history-selector (sensorHistorySelection)=onSensorHistorySelection($event)> </app-sensor-history-selector>
             </div>
         </div>
     </div>
-    <div style="max-width: 800px; margin: auto" id="sensor-selection" [ngbCollapse]="isSelectionCollapsed">
-        <div class="card border border-primary">
-            <app-sensor-history-selector (sensorHistorySelection)=onSensorHistorySelection($event)> </app-sensor-history-selector>
-        </div>
-    </div>
+    <app-debug-display-history *ngIf="displayData" [sensorHistorySelection]=sensorHistorySelection></app-debug-display-history>
 </div>
-<app-debug-display-history *ngIf="displayData" [sensorHistorySelection]=sensorHistorySelection></app-debug-display-history>

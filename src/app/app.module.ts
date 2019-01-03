@@ -12,15 +12,15 @@ import { AppComponent } from './app.component';
 import {RouterModule} from '@angular/router';
 import {GreetingService} from './home/greeting.service';
 import {HttpModule} from '@angular/http';
-
-import {NavBarComponent} from './ui/navbar/navbar.component';
-import {HomeComponent} from './home/home.component';
-import {SensorModule} from './sensor/sensor.module';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
+import {HomeComponent} from './home/home.component';
+import {SensorModule} from './sensor/sensor.module';
+import {UiModule} from './ui/ui.module';
+
 @NgModule({
-  declarations: [AppComponent, NavBarComponent, HomeComponent],
-  imports     : [BrowserModule, FormsModule, HttpModule, AppRoutingModule, NgbModule, SensorModule],
+  declarations: [AppComponent, HomeComponent],
+  imports     : [BrowserModule, FormsModule, HttpModule, AppRoutingModule, NgbModule, SensorModule, UiModule],
   providers   : [GreetingService, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap   : [AppComponent]
 })

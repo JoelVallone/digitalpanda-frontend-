@@ -27,4 +27,4 @@ echo "Contacting backend REST API"
 curl -v http://localhost:8080/ui/greeting
 
 echo "Build and serve frontend"
-npm run start
+ng serve --host=0.0.0.0
