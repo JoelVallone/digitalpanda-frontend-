@@ -7,12 +7,12 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { UiModule } from '../ui/ui.module';
-import { SingleValueDisplayLatestComponent } from './live/single-value-display/single-value-display.latest.component';
 import { LocationValuesDisplayLatestComponent } from './live/location-values-display//location-values-display.latest.component';
 import { DebugDisplayHistoryComponent } from './history/debug-display/debug-display.history.component';
 import { LiveSensorComponent } from './live/live.sensor.component';
 import { HistorySensorComponent } from './history/history.sensor.component';
 import { SensorHistorySelectorComponent } from './selector/sensor-history-selector.component';
+import { SensorLocationSelectorComponent } from './selector/sensor-location-selector/sensor-location-selector.component';
 import { SensorHistorySelectorFormService } from './selector/sensor-history-selector-form.service';
 import { SensorService } from './sensor.service';
 import { SensorIdentificationComponent } from './selector/sensor-identification/sensor-identification.component';
@@ -31,9 +31,9 @@ import { TimeIntervalSelectorComponent } from './selector/time-interval-selector
     SensorService, SensorHistorySelectorFormService
   ],
   declarations: [
-    SingleValueDisplayLatestComponent, LocationValuesDisplayLatestComponent,
+    LocationValuesDisplayLatestComponent, SensorLocationSelectorComponent,
     DebugDisplayHistoryComponent, LiveSensorComponent, HistorySensorComponent,
-    SensorIdentificationComponent, TimeIntervalSelectorComponent, SensorHistorySelectorComponent
+    SensorIdentificationComponent, TimeIntervalSelectorComponent, SensorHistorySelectorComponent,
   ],
   exports: [
     LiveSensorComponent, HistorySensorComponent
