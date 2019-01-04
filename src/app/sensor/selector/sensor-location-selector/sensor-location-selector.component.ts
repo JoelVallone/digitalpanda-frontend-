@@ -30,12 +30,13 @@ export class SensorLocationSelectorComponent implements OnInit {
     this.emitLocationSelectionChange();
   }
 
-  toggleAllLocations(): void {
-    if (this.isSelectionEmpty()) {
-      this.setAllLocations(true);
-    } else {
-      this.setAllLocations(false);
-    }
+  selectAllLocations(): void {
+    this.setAllLocations(true);
+    this.emitLocationSelectionChange();
+  }
+
+  clearAllLocations(): void {
+    this.setAllLocations(false);
     this.emitLocationSelectionChange();
   }
 
@@ -46,6 +47,10 @@ export class SensorLocationSelectorComponent implements OnInit {
     } else {
       this.isSelectedCount = 0;
     }
+  }
+
+  isSelectionFull(): boolean {
+    return this.isSelectedCount === this.possibleLocations.size && this.possibleLocations.size !== 0;
   }
 
   isSelectionEmpty(): boolean {

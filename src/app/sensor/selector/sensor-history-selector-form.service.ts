@@ -12,7 +12,7 @@ export class SensorHistorySelection {
 @Injectable()
 export class SensorHistorySelectorFormService {
 
-  private static DEFAULT_INTERVAL_LENGTH_MILLIS: number = 10 * 1000;
+  private static DEFAULT_INTERVAL_LENGTH_MILLIS: number = 24 * 3600 * 1000;
 
   public form: FormGroup;
   private _measureTypesByLocationMap = new Map<string, Array<SensorMeasureMetaData>>();
@@ -265,13 +265,17 @@ export class SensorHistorySelectorFormService {
     return this.locationsMeasures.length === 0;
   }
 
-  public toggleAllLocations(): void {
-    if (this.isMeasureTypesByLocationEmtpy()) {
-      this.updateSelectableLocations(this.getAllStoredLocations(), true);
-    } else {
-      this.updateSelectableLocations(this.getAllStoredLocations(), false);
-      this.clearLocationsMeasures();
-    }
+  public isMeasureTypesByLocationFull(): Boolean {
+    return this.locationsMeasures.length === this.locations.length && this.locations.length !== 0;
+  }
+
+  public selectAllLocations(): void {
+    this.updateSelectableLocations(this.getAllStoredLocations(), true);
+  }
+
+  public clearAllLocations(): void {
+    this.updateSelectableLocations(this.getAllStoredLocations(), false);
+    this.clearLocationsMeasures();
   }
 
   public clearLocationsMeasures(): void {

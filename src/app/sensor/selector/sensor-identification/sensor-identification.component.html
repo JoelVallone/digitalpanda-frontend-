@@ -4,15 +4,15 @@
         <h5 class="card-title">
             Location
         </h5>
-        <div class="card-text" style="margin-bottom : 10px;">
-            <div *ngIf="isMeasureTypesByLocationEmtpy()" class="text-left">
-                <button class="btn btn-outline-success btn-sm" type="button" (click)="toggleAllLocations()">
-                    All locations
+        <div class="row" style="margin-bottom : 10px;">
+            <div class="col-6 text-left">
+                <button *ngIf="!isMeasureTypesByLocationFull()" class="btn btn-outline-success btn-sm" type="button" (click)="selectAllLocations()">
+                    Select all
                 </button>
             </div>
-            <div *ngIf="!isMeasureTypesByLocationEmtpy()" class="text-right">
-                <button class="btn btn-outline-danger btn-sm" type="button" (click)="toggleAllLocations()">
-                    Clear locations
+            <div class="col-6 text-right">
+                <button *ngIf="!isMeasureTypesByLocationEmtpy()" class="btn btn-outline-danger btn-sm" type="button" (click)="clearAllLocations()">
+                    Clear all
                 </button>
             </div>
         </div>

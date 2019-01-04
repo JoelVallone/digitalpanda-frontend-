@@ -19,8 +19,17 @@ export class SensorIdentificationComponent {
     return this.formService.isMeasureTypesByLocationEmtpy();
   }
 
-  public toggleAllLocations(): void {
-    return this.formService.toggleAllLocations();
+  public isMeasureTypesByLocationFull(): Boolean {
+    return this.formService.isMeasureTypesByLocationFull();
   }
+
+  public selectAllLocations(): void {
+    return this.formService.selectAllLocations();
+  }
+
+  public clearAllLocations(): void {
+    return this.formService.clearAllLocations();
+  }
+
 
 }
