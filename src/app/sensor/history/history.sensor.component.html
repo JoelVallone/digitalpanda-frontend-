@@ -1,12 +1,12 @@
 <div class="page-box container-fluid">
     <app-page-title title="Monitoring history">
     </app-page-title>
-    <div>
+    <div style="margin-bottom: 25px;">
         <div class="container text-center" style="margin-bottom: 15px;">
             <div class="row" style="margin-bottom: 15px">
                 <div class="col-md-12">
                     <button type="button" class="btn btn-outline-info" (click)="toggleSensorSelection()" [attr.aria-expanded]="!isSelectionCollapsed" aria-controls="collapseExample">
-              {{ isSelectionCollapsed ? sensorSelectionText : 'Hide data selection' }}
+              {{ getSensorSelectionText() }}
             </button>
                 </div>
             </div>
@@ -17,5 +17,9 @@
             </div>
         </div>
     </div>
-    <app-debug-display-history *ngIf="displayData" [sensorHistorySelection]=sensorHistorySelection></app-debug-display-history>
+    <div>
+        <hr/>
+        <app-multi-chart-history *ngIf="isSelectionCollapsed && canDisplayData()" [sensorsMeasures]="sensorsMeasures" [measureTypes]="selectedMeasureTypes" [fromMillis]="sensorHistorySelection.fromMillis" [toMillis]="sensorHistorySelection.toMillis"> </app-multi-chart-history>
+        <app-debug-display-history *ngIf="isSelectionCollapsed && canDisplayData()" [sensorHistorySelection]=sensorHistorySelection></app-debug-display-history>
+    </div>
 </div>

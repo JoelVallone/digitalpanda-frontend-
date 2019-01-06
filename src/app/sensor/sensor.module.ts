@@ -1,10 +1,12 @@
 
 /* These are JavaScript import statements. Angular doesn’t know anything about these. */
 import { NgModule } from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { UiModule } from '../ui/ui.module';
 import { LocationValuesDisplayLatestComponent } from './live/location-values-display//location-values-display.latest.component';
@@ -17,6 +19,7 @@ import { SensorHistorySelectorFormService } from './selector/sensor-history-sele
 import { SensorService } from './sensor.service';
 import { SensorIdentificationComponent } from './selector/sensor-identification/sensor-identification.component';
 import { TimeIntervalSelectorComponent } from './selector/time-interval-selector/time-interval-selector.component';
+import { MultiChartHistoryComponent } from './history/multi-chart/multi-chart.history.component';
 
 @NgModule({
   imports: [
@@ -24,15 +27,17 @@ import { TimeIntervalSelectorComponent } from './selector/time-interval-selector
     ReactiveFormsModule,
     FormsModule,
     BrowserModule,
+    BrowserAnimationsModule,
     NgbModule,
-    UiModule
+    UiModule,
+    NgxChartsModule
   ],
   providers: [
     SensorService, SensorHistorySelectorFormService
   ],
   declarations: [
     LocationValuesDisplayLatestComponent, SensorLocationSelectorComponent,
-    DebugDisplayHistoryComponent, LiveSensorComponent, HistorySensorComponent,
+    DebugDisplayHistoryComponent, MultiChartHistoryComponent, LiveSensorComponent, HistorySensorComponent,
     SensorIdentificationComponent, TimeIntervalSelectorComponent, SensorHistorySelectorComponent,
   ],
   exports: [
