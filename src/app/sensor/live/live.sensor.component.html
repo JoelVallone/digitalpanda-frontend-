@@ -10,7 +10,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" style="margin-bottom: 15px;">
         <div class="col-12 text-center">
             <div style="max-width: 400px; margin: auto;" *ngFor="let measureKeysForLocation of measureKeysByLocation$ | async | keyvalue">
                 <app-location-values-latest *ngIf="selectedMeasureLocations.has(measureKeysForLocation.key)" [location]="measureKeysForLocation.key" [sensorKeys]="measureKeysForLocation.value">

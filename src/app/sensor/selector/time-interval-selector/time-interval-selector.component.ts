@@ -53,7 +53,7 @@ export class TimeIntervalSelectorComponent {
     this.displayDatePicker = true;
   }
 
-  private setDefaultInterval() {
+  setDefaultInterval() {
     this.formService.setDefaultInterval();
     this.fetchDatesFromFormService();
   }

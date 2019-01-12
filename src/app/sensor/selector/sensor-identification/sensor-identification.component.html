@@ -17,17 +17,17 @@
             </div>
         </div>
         <div class="card-text text-center">
-            <div formArrayName="locations" *ngFor="let location of sensorsIdentificationForm.get('locations').controls; let i=index " class="btn-group btn-group-toggle">
+            <div formArrayName="locations" *ngFor="let location of asFormArray(sensorsIdentificationForm.get('locations')).controls; let i=index " class="btn-group btn-group-toggle">
                 <label [formGroupName]="i" class="btn btn-outline-secondary btn-sm" ngbButtonLabel>
             <input type="checkbox" formControlName="isSelected" ngbButton>{{location.get('location').value}}
           </label>
             </div>
         </div>
-        <div style="margin-top : 30px;" *ngIf="sensorsIdentificationForm.get('locationsMeasures').length !== 0" class="card-text">
+        <div style="margin-top : 30px;" *ngIf="asFormArray(sensorsIdentificationForm.get('locationsMeasures')).length !== 0" class="card-text">
             <h5> Measure type </h5>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item" formArrayName="locationsMeasures" *ngFor="let locationMeasures of sensorsIdentificationForm.get('locationsMeasures').controls; let i=index">
+            <li class="list-group-item" formArrayName="locationsMeasures" *ngFor="let locationMeasures of asFormArray(sensorsIdentificationForm.get('locationsMeasures')).controls; let i=index">
                 <div [formGroupName]="i" class="text-center">
                     <div style="margin-bottom : 5px;">
                         <i>{{locationMeasures.get('location').value}}</i>

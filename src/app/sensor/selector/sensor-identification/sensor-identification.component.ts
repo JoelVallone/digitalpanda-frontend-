@@ -31,5 +31,9 @@ export class SensorIdentificationComponent {
     return this.formService.clearAllLocations();
   }
 
+  asFormArray(val: any): FormArray {
+    return val;
+  }
+
 
 }
