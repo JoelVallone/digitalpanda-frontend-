@@ -8,11 +8,13 @@
         <li class="list-group-item" *ngFor="let viewMeasure of viewMeasures; let i=index ">
             <div class="row">
                 <div class="col-7 text-left">
-                    <b>{{viewMeasure.measureTypeDetails?.typeName}}</b>
+                    <i>{{viewMeasure.measureTypeDetails?.typeName}}</i>
                 </div>
                 <div class="col-5 text-left">
-                    <span *ngIf="viewMeasure.isLoaded">{{ viewMeasure.measure.value | number : '1.2-2' }}</span>
-                    <span *ngIf="!viewMeasure.isLoaded">-</span>{{[ viewMeasure.measureTypeDetails?.unitSymbol]}}
+                    <b>
+                      <span *ngIf="viewMeasure.isLoaded">{{ viewMeasure.measure.value | number : '1.2-2' }}</span>
+                      <span *ngIf="!viewMeasure.isLoaded">&nbsp;</span>&nbsp;{{[ viewMeasure.measureTypeDetails?.unitSymbol]}}
+                    </b>
                 </div>
             </div>
             <div class="row">
