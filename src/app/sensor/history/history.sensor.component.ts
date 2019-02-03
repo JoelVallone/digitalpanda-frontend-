@@ -45,13 +45,13 @@ export class HistorySensorComponent {
 
   constructor(public sensorService: SensorService) {
     this.historySelectionLoadedCount = 0;
-    this.isSelectionCollapsed = false;
+    this.isSelectionCollapsed = true;
     this.isSelectionPristine = true;
     this.sensorHistorySelection = new SensorHistorySelection(0, 0, []);
     this.selectedMeasureTypes = new Set();
     this.sensorsMeasures$ = [];
     this.sensorsMeasures = [];
-    this.onSensorHistorySelection(this.testSelection);
+    this.onSensorHistorySelection(this.testSelection); // TODO: <= fix data display bug when removing initial load
   }
 
   toggleSensorSelection() {

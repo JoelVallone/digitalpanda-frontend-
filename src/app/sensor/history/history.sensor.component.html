@@ -20,6 +20,8 @@
     <div>
         <hr/>
         <app-multi-chart-history *ngIf="isSelectionCollapsed && canDisplayData()" [sensorsMeasures]="sensorsMeasures" [measureTypes]="selectedMeasureTypes" [fromMillis]="sensorHistorySelection.fromMillis" [toMillis]="sensorHistorySelection.toMillis"> </app-multi-chart-history>
+        <!--
         <app-debug-display-history *ngIf="isSelectionCollapsed && canDisplayData()" [sensorHistorySelection]=sensorHistorySelection></app-debug-display-history>
+        -->
     </div>
 </div>

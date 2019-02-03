@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TimeSeries, MultiChartHistoryService } from './multi-chart.history.service';
-import { SensorMeasuresHistoryDto, SensorMeasureType } from '../../sensor.classes';
+import { SensorMeasuresHistoryDto, SensorMeasureType, SensorMeasureMetaData } from '../../sensor.classes';
 
 
 @Component({
@@ -47,5 +47,9 @@ export class MultiChartHistoryComponent implements OnChanges {
 
   private updateTimeSeries(newSensorsMeasures: Array<SensorMeasuresHistoryDto>): void {
     this.timeSeriesByType = MultiChartHistoryService.toTimeSeriesByMeasureType(newSensorsMeasures);
+  }
+
+  getMeasureTypeFormatted(measureType: SensorMeasureType): string {
+    return SensorMeasureMetaData.getTypeDetail(measureType).toString();
   }
 }
