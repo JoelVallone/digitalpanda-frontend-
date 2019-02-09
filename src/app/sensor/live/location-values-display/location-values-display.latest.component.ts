@@ -10,7 +10,6 @@ export class ViewMeasure {
     public measureTypeDetails?: SensorMeasureTypeDetails,
     public sensorKey?: SensorMeasureMetaData,
     public isLoaded?: boolean,
-    public periodicServiceCallHandle?: any,
     public measure?: SensorMeasureLatestDto,
   ) {}
 }
@@ -26,6 +25,7 @@ export class LocationValuesDisplayLatestComponent implements OnChanges, OnDestro
   @Input() public sensorKeys: Array<SensorMeasureMetaData>;
 
   public viewMeasures: Array<ViewMeasure>;
+  public periodicServiceCallHandle?: any;
 
   constructor(public sensorService: SensorService) {
     this.viewMeasures = [];
@@ -52,11 +52,12 @@ export class LocationValuesDisplayLatestComponent implements OnChanges, OnDestro
   }
 
   private cancelDataAutoRefresh(): void {
-    this.viewMeasures.forEach(viewMeasure => clearInterval(viewMeasure.periodicServiceCallHandle));
+    clearInterval(this.periodicServiceCallHandle);
   }
 
   private startDataAutoRefresh(sensorKeys:  Array<SensorMeasureMetaData>, location: string): void {
     const that = this;
+    this.viewMeasures = [];
     sensorKeys
       .filter((sensorKey) => sensorKey.location === location)
       .forEach((sensorKey) => {
@@ -64,16 +65,18 @@ export class LocationValuesDisplayLatestComponent implements OnChanges, OnDestro
           viewMeasure.isLoaded = false;
           viewMeasure.measureTypeDetails = SensorMeasureMetaData.getTypeDetail(sensorKey.type);
           viewMeasure.sensorKey = sensorKey;
-          viewMeasure.periodicServiceCallHandle =  setInterval((ref) => {that.loadAndSetMeasureCallback(that, viewMeasure); }, 1000);
           that.viewMeasures.push(viewMeasure);
       });
+      that.loadAndSetMeasureCallback(that, this.viewMeasures);
+      this.periodicServiceCallHandle =  setInterval((ref) => {that.loadAndSetMeasureCallback(that, this.viewMeasures); }, 1000);
   }
 
-  private loadAndSetMeasureCallback(that, viewMeasure: ViewMeasure): void {
-    that.sensorService.loadLatestMeasure(viewMeasure.sensorKey)
-      .subscribe((latestMeasure) => {
-        viewMeasure.measure = latestMeasure;
-        viewMeasure.isLoaded = true;
-      });
+  private loadAndSetMeasureCallback(that, viewMeasures: Array<ViewMeasure>): void {
+    viewMeasures.forEach((viewMeasure) =>
+      that.sensorService.loadLatestMeasure(viewMeasure.sensorKey)
+        .subscribe((latestMeasure) => {
+          viewMeasure.measure = latestMeasure;
+          viewMeasure.isLoaded = true;
+        }));
   }
 }
