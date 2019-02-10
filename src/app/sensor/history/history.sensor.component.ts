@@ -19,8 +19,8 @@ export class HistorySensorComponent {
 
   sensorHistorySelection: SensorHistorySelection;
   selectedMeasureTypes: Set<SensorMeasureType>;
-  isSelectionCollapsed: Boolean;
-  isSelectionPristine: Boolean;
+  isSelectionCollapsed: boolean;
+  isSelectionPristine: boolean;
   historySelectionLoadedCount: number;
 
   private testSelection = {
@@ -76,6 +76,9 @@ export class HistorySensorComponent {
       }));
   }
 
+  isLoading(): boolean {
+    return  this.isSelectionCollapsed && !this.isSelectionPristine && !this.canDisplayData();
+  }
   canDisplayData(): boolean {
     return this.sensorHistorySelection && this.historySelectionLoadedCount === this.sensorHistorySelection.measureSelection.length
             && this.sensorHistorySelection.measureSelection.length !== 0;
