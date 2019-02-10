@@ -6,13 +6,13 @@
         </h5>
         <div class="row" style="margin-bottom : 10px;">
             <div class="col-6 text-left">
-                <button *ngIf="!isMeasureTypesByLocationFull()" class="btn btn-outline-success btn-sm" type="button" (click)="selectAllLocations()">
-                    Select all
+                <button style="width: 55px;" *ngIf="!isMeasureTypesByLocationFull()" class="btn btn-outline-success btn-sm" type="button" (click)="selectAllLocations()">
+                    All
                 </button>
             </div>
             <div class="col-6 text-right">
-                <button *ngIf="!isMeasureTypesByLocationEmtpy()" class="btn btn-outline-danger btn-sm" type="button" (click)="clearAllLocations()">
-                    Clear all
+                <button style="width: 55px;" *ngIf="!isMeasureTypesByLocationEmtpy()" class="btn btn-outline-danger btn-sm" type="button" (click)="clearAllLocations()">
+                    Clear
                 </button>
             </div>
         </div>
@@ -27,11 +27,23 @@
             <h5> Measure type </h5>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item" formArrayName="locationsMeasures" *ngFor="let locationMeasures of asFormArray(sensorsIdentificationForm.get('locationsMeasures')).controls; let i=index">
-                <div [formGroupName]="i" class="text-center">
-                    <div style="margin-bottom : 5px;">
-                        <i>{{locationMeasures.get('location').value}}</i>
+            <li class="list-group-item" style="padding-top: 20px; padding-left:0px; padding-right:0px; padding-bottom: 20px;" formArrayName="locationsMeasures" *ngFor="let locationMeasures of asFormArray(sensorsIdentificationForm.get('locationsMeasures')).controls; let i=index">
+                <div class="text-center" style="margin-bottom : 5px;">
+                    <i>{{locationMeasures.get('location').value}}</i>
+                </div>
+                <div class="row">
+                    <div class="col-6 text-left">
+                        <button style="width: 55px;" *ngIf="!isMeasureTypesForLocationFull(locationMeasures.get('location').value)" class="btn btn-outline-success btn-sm" type="button" (click)="selectAllForLocation(locationMeasures.get('location').value)">
+                        All
+                    </button>
                     </div>
+                    <div class="col-6 text-right">
+                        <button style="width: 55px;" *ngIf="!isMeasureTypesForLocationEmpty(locationMeasures.get('location').value)" class="btn btn-outline-danger btn-sm" type="button" (click)="clearAllForLocation(locationMeasures.get('location').value)">
+                        Clear
+                    </button>
+                    </div>
+                </div>
+                <div [formGroupName]="i" class="text-center">
                     <div formArrayName="measures">
                         <div>
                             <div *ngFor="let measure of locationMeasures.get( 'measures').controls; let j=index" class="btn-group btn-group-toggle">

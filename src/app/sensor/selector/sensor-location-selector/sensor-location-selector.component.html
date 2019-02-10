@@ -5,13 +5,13 @@
 </div>
 <div class="row" style="margin-bottom : 10px;">
     <div class="col-6 text-left">
-        <button *ngIf="!isSelectionFull()" class="btn btn-outline-success btn-sm" type="button" (click)="selectAllLocations()">
-             Select all
+        <button style="width: 55px;" *ngIf="!isSelectionFull()" class="btn btn-outline-success btn-sm" type="button" (click)="selectAllLocations()">
+             All
             </button>
     </div>
     <div class="col-6 text-right">
-        <button *ngIf="!isSelectionEmpty()" class="btn btn-outline-danger btn-sm" type="button" (click)="clearAllLocations()">
-           Clear all
+        <button style="width: 55px;" *ngIf="!isSelectionEmpty()" class="btn btn-outline-danger btn-sm" type="button" (click)="clearAllLocations()">
+           Clear
           </button>
     </div>
 </div>

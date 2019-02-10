@@ -261,11 +261,11 @@ export class SensorHistorySelectorFormService {
     });
   }
 
-  public isMeasureTypesByLocationEmtpy(): Boolean {
+  public isMeasureTypesByLocationEmtpy(): boolean {
     return this.locationsMeasures.length === 0;
   }
 
-  public isMeasureTypesByLocationFull(): Boolean {
+  public isMeasureTypesByLocationFull(): boolean {
     return this.locationsMeasures.length === this.locations.length && this.locations.length !== 0;
   }
 
@@ -276,6 +276,38 @@ export class SensorHistorySelectorFormService {
   public clearAllLocations(): void {
     this.updateSelectableLocations(this.getAllStoredLocations(), false);
     this.clearLocationsMeasures();
+  }
+
+  public isMeasureTypesForLocationEmpty(location: string): boolean {
+    return this.isMeasureTypesForLocationAllSame(location, false);
+  }
+
+  public isMeasureTypesForLocationFull(location: string): boolean {
+    return this.isMeasureTypesForLocationAllSame(location, true);
+  }
+
+  public isMeasureTypesForLocationAllSame(location: string, isSelected: boolean): boolean {
+    return this.locationsMeasures.controls
+    .filter((locationMeasures) => location === locationMeasures.get('location').value )
+    .every(locationMeasures =>
+        (locationMeasures.get('measures') as FormArray).controls
+            .every(measure => measure.get('isSelected').value === isSelected));
+  }
+
+  public selectAllForLocation(location: string): void {
+    this.setAllForLocation(location, true);
+  }
+
+  public clearAllForLocation(location: string): void {
+    this.setAllForLocation(location, false);
+  }
+
+  public setAllForLocation(location: string, isSelected: boolean): void {
+    this.locationsMeasures.controls
+    .filter((locationMeasures) => location === locationMeasures.get('location').value )
+    .forEach(locationMeasures =>
+        (locationMeasures.get('measures') as FormArray).controls
+            .forEach(measure => measure.get('isSelected').setValue(isSelected)));
   }
 
   public clearLocationsMeasures(): void {

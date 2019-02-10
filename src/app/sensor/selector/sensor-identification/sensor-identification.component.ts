@@ -15,25 +15,40 @@ export class SensorIdentificationComponent {
 
   constructor(public formService: SensorHistorySelectorFormService) {}
 
-  public isMeasureTypesByLocationEmtpy(): Boolean {
+  public isMeasureTypesByLocationEmtpy(): boolean {
     return this.formService.isMeasureTypesByLocationEmtpy();
   }
 
-  public isMeasureTypesByLocationFull(): Boolean {
+  public isMeasureTypesByLocationFull(): boolean {
     return this.formService.isMeasureTypesByLocationFull();
   }
 
   public selectAllLocations(): void {
-    return this.formService.selectAllLocations();
+    this.formService.selectAllLocations();
   }
 
   public clearAllLocations(): void {
-    return this.formService.clearAllLocations();
+    this.formService.clearAllLocations();
+  }
+
+  public isMeasureTypesForLocationEmpty(location: string): boolean {
+    return this.formService.isMeasureTypesForLocationEmpty(location);
+  }
+
+  public isMeasureTypesForLocationFull(location: string): boolean {
+    return this.formService.isMeasureTypesForLocationFull(location);
+  }
+
+  public selectAllForLocation(location: string): void {
+    this.formService.selectAllForLocation(location);
+  }
+
+  public clearAllForLocation(location: string): void {
+    this.formService.clearAllForLocation(location);
   }
 
   asFormArray(val: any): FormArray {
     return val;
   }
-
 
 }
