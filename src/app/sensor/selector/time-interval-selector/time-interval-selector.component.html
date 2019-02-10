@@ -34,6 +34,16 @@
                 <div class="row">
                     <div class="col-md-4"></div>
                     <div class="col-md-4">
+                        <!--
+                            <div class="input-group">
+                            <input ngbDatepicker #dFrom="ngbDatepicker" id="fromDate" class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate" formControlName="date">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" (click)="dFrom.toggle()" type="button">
+                                  <i class="icon-border  far fa-calendar-alt" width=30px; height=30px; ></i>
+                                </button>
+                            </div>
+                        </div>
+                      -->
                         <input style="text-align: center" *ngIf="!displayDatePicker" id="fromDate" class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate" formControlName="date">
                     </div>
                     <div class="col-md-4"></div>

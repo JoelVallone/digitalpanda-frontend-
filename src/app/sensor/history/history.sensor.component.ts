@@ -13,7 +13,7 @@ import { SensorMeasure, SensorMeasureType } from '../sensor.classes';
   templateUrl: './history.sensor.component.html'
 })
 export class HistorySensorComponent {
-  private readonly DATA_POINTS_PER_SAMPLE: number = 500;
+  private readonly DATA_POINTS_PER_SAMPLE: number = 250;
   sensorsMeasures$: Array<Observable<Array<SensorMeasuresHistoryDto>>>;
   sensorsMeasures: Array<SensorMeasuresHistoryDto>;
 
