@@ -12,7 +12,7 @@ export class SensorHistorySelection {
 @Injectable()
 export class SensorHistorySelectorFormService {
 
-  private static DEFAULT_INTERVAL_LENGTH_MILLIS: number = 24 * 3600 * 1000;
+  public static DEFAULT_INTERVAL_LENGTH_MILLIS: number = 24 * 3600 * 1000;
 
   public form: FormGroup;
   private _measureTypesByLocationMap = new Map<string, Array<SensorMeasureMetaData>>();
@@ -41,12 +41,12 @@ export class SensorHistorySelectorFormService {
     this.subscribeInternalListeners();
   }
 
-  public setDefaultInterval(): void {
+  public setRelativeIntervalFromNow(deltaMillis: number): void {
     const intervalTo: Date = new Date();
     this.updateDate('to', intervalTo);
     this.updateTime('to', intervalTo);
 
-    const intervalFrom: Date = new Date(intervalTo.getTime() - SensorHistorySelectorFormService.DEFAULT_INTERVAL_LENGTH_MILLIS);
+    const intervalFrom: Date = new Date(intervalTo.getTime() - deltaMillis);
     this.updateDate('from', intervalFrom);
     this.updateTime('from', intervalFrom);
   }

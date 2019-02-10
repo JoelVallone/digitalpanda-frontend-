@@ -42,19 +42,46 @@ export class TimeIntervalSelectorComponent {
 
   fromDate: NgbDate;
   toDate: NgbDate;
-  displayDatePicker: Boolean;
+  displayDatePicker: boolean;
+
   hoveredDate: NgbDate;
+
+  DEFAULT_RELATIVE_TIME = '24H';
+  displayRelativeTimeSelector: boolean;
+  selectedRelativeTime: string;
+  relativeTimeKeys: Array<string> = new Array();
+  relativeTimeMap: Map<string, number> = new Map();
 
   fromTime: NgbTimeStruct;
   toTime: NgbTimeStruct;
 
   constructor(calendar: NgbCalendar, public formService: SensorHistorySelectorFormService) {
-    this.setDefaultInterval();
+
+    this.addRelativeTime('1H',       1 * 60 * 60 * 1000);
+    this.addRelativeTime('4H',       4 * 60 * 60 * 1000);
+    this.addRelativeTime('8H',       8 * 60 * 60 * 1000);
+    this.addRelativeTime('12H',     12 * 60 * 60 * 1000);
+    this.addRelativeTime('24H',     24 * 60 * 60 * 1000);
+    this.addRelativeTime('2D',  2 * 24 * 60 * 60 * 1000);
+    this.addRelativeTime('7D',  7 * 24 * 60 * 60 * 1000);
+
     this.displayDatePicker = true;
+    this.displayRelativeTimeSelector = true;
+    this.setDefaultInterval();
   }
 
-  setDefaultInterval() {
-    this.formService.setDefaultInterval();
+
+  private setDefaultInterval() {
+    this.selectRelativeTime(this.DEFAULT_RELATIVE_TIME);
+  }
+  private addRelativeTime(timeDisplayName: string, timeMillis: number) {
+    this.relativeTimeMap.set(timeDisplayName, timeMillis);
+    this.relativeTimeKeys.push(timeDisplayName);
+  }
+
+  selectRelativeTime(timeDisplayName: string) {
+    this.selectedRelativeTime = timeDisplayName
+    this.formService.setRelativeIntervalFromNow(this.relativeTimeMap.get(timeDisplayName));
     this.fetchDatesFromFormService();
   }
 
@@ -77,6 +104,10 @@ export class TimeIntervalSelectorComponent {
   private fetchDatesFromFormService(): void {
     this.fromDate = this.toFormViewDate(this.formService.getFromDateStd());
     this.toDate =  this.toFormViewDate(this.formService.getToDateStd());
+  }
+
+  public toggleIntervalSelector() {
+    this.displayRelativeTimeSelector = !this.displayRelativeTimeSelector;
   }
 
   public toggleDatePicker() {

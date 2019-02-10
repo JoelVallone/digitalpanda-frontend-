@@ -45,7 +45,7 @@ export class HistorySensorComponent {
 
   constructor(public sensorService: SensorService) {
     this.historySelectionLoadedCount = 0;
-    this.isSelectionCollapsed = true;
+    this.isSelectionCollapsed = false;
     this.isSelectionPristine = true;
     this.sensorHistorySelection = new SensorHistorySelection(0, 0, []);
     this.selectedMeasureTypes = new Set();
