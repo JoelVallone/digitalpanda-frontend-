@@ -1,31 +1,31 @@
 <div class="card" [formGroup]="timeIntervalForm">
     <h5 class="card-header">Time interval selection</h5>
     <div class="card-body text-center">
-      <div>
-          <div class="row">
-              <div class="col-6 text-left">
-                  <button style="width: 75px;" class="btn btn-outline-info  btn-sm" (click)="toggleIntervalSelector()" type="button">
+        <div>
+            <div class="row">
+                <div class="col-6 text-left">
+                    <button style="width: 75px;" class="btn btn-outline-info  btn-sm" (click)="toggleIntervalSelector()" type="button">
                     {{ displayRelativeTimeSelector ?  'Explicit' : 'Relative' }}
                   </button>
-              </div>
-              <div class="col-6 text-right">
-                  <button style="width: 75px;" class="btn btn-outline-danger  btn-sm" (click)="setDefaultInterval()" type="button">
+                </div>
+                <div class="col-6 text-right">
+                    <button style="width: 75px;" class="btn btn-outline-danger  btn-sm" (click)="setDefaultInterval()" type="button">
                       Reset
                   </button>
-              </div>  
-          </div>
-          <hr/>
+                </div>
+            </div>
+            <hr/>
         </div>
-        <div  *ngIf="displayRelativeTimeSelector">
+        <div *ngIf="displayRelativeTimeSelector">
             <h5 for="fromDate" class="text-left">
                 Relative - since
             </h5>
-            <form class="card-text text-center" >
-              <div class="btn-group btn-group-toggle"data-toggle="buttons" >
-                  <label class="btn btn-outline-primary btn-sm {{ relativeTime == selectedRelativeTime ? 'active' : '' }}" *ngFor="let relativeTime of relativeTimeKeys">
+            <form class="card-text text-center">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-primary btn-sm {{ relativeTime == selectedRelativeTime ? 'active' : '' }}" *ngFor="let relativeTime of relativeTimeKeys">
                     <input name="relativeTimeSelection" type="radio" value="{{ relativeTime }}" (click)="selectRelativeTime(relativeTime)">{{relativeTime}}
                   </label>
-              </div>
+                </div>
             </form>
         </div>
         <div *ngIf="!displayRelativeTimeSelector">
@@ -39,7 +39,10 @@
                 </button>
                 </div>
                 <div *ngIf="displayDatePicker">
-                    <i>Pick <b>from</b> and <b>to</b> dates</i>
+                    <i>Pick
+                      <b [style.color]="fromDate ? 'green': 'red'">from</b> and
+                      <b [style.color]="toDate ? 'green': 'red'" >to</b> dates
+                    </i>
                     <br>
                     <ngb-datepicker *ngIf="displayDatePicker" #dp (select)="onDateSelection($event)" [displayMonths]="1" [dayTemplate]="t" outsideDays="hidden">
                         <ng-template #t let-date let-focused="focused">
@@ -116,7 +119,8 @@
                 </div>
             </div>
             <div class="alert alert-danger text-center" *ngIf="timeIntervalForm.errors">
-                <div *ngIf="timeIntervalForm.errors.timestampPrecedence">The time interval must be of at least one second.</div>
+                <div *ngIf="timeIntervalForm.errors.timestampPrecedence">The time interval size <b> must be of at least one second</b>.</div>
+                <div *ngIf="timeIntervalForm.errors.intervalOverflow">The time interval size <b> must be bellow one day</b>.</div>
             </div>
         </div>
     </div>

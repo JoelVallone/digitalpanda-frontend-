@@ -62,8 +62,8 @@ export class TimeIntervalSelectorComponent {
     this.addRelativeTime('8H',       8 * 60 * 60 * 1000);
     this.addRelativeTime('12H',     12 * 60 * 60 * 1000);
     this.addRelativeTime('24H',     24 * 60 * 60 * 1000);
-    this.addRelativeTime('2D',  2 * 24 * 60 * 60 * 1000);
-    this.addRelativeTime('7D',  7 * 24 * 60 * 60 * 1000);
+    // this.addRelativeTime('2D',  2 * 24 * 60 * 60 * 1000); // TODO: Add interval pre-computation for larger queries
+    // this.addRelativeTime('7D',  7 * 24 * 60 * 60 * 1000);
 
     this.displayDatePicker = true;
     this.displayRelativeTimeSelector = true;
@@ -80,7 +80,7 @@ export class TimeIntervalSelectorComponent {
   }
 
   selectRelativeTime(timeDisplayName: string) {
-    this.selectedRelativeTime = timeDisplayName
+    this.selectedRelativeTime = timeDisplayName;
     this.formService.setRelativeIntervalFromNow(this.relativeTimeMap.get(timeDisplayName));
     this.fetchDatesFromFormService();
   }

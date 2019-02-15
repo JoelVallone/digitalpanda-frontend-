@@ -13,6 +13,7 @@ export class SensorHistorySelection {
 export class SensorHistorySelectorFormService {
 
   public static DEFAULT_INTERVAL_LENGTH_MILLIS: number = 24 * 3600 * 1000;
+  public MAX_TIME_INTERVAL_MILLIS: number = 1 * 24 * 3600 * 1000;
 
   public form: FormGroup;
   private _measureTypesByLocationMap = new Map<string, Array<SensorMeasureMetaData>>();
@@ -35,7 +36,7 @@ export class SensorHistorySelectorFormService {
           })
         },
         {
-          validator:  (fg) => this.timestampPrecedenceValidator(fg)
+          validator:  (fg) => this.timeIntervalValidator(fg)
         })
     });
     this.subscribeInternalListeners();
@@ -99,11 +100,15 @@ export class SensorHistorySelectorFormService {
     return this.parseDate(this.getDate('from'));
   }
 
-  public timestampPrecedenceValidator(timeIntervalControl: AbstractControl): ValidationErrors {
+  public timeIntervalValidator(timeIntervalControl: AbstractControl): ValidationErrors {
     const fromMillis = this.getTimestampMillis('from', timeIntervalControl);
     const toMillis = this.getTimestampMillis('to', timeIntervalControl);
-    if (fromMillis && toMillis && ((fromMillis + 1000) > toMillis)) {
-      return {timestampPrecedence: true};
+    if (fromMillis && toMillis) {
+      if (toMillis < (fromMillis + 1000)) {
+        return {timestampPrecedence: true};
+      } else if (toMillis > (fromMillis + this.MAX_TIME_INTERVAL_MILLIS + 1000)) {
+        return {intervalOverflow: true};
+      }
     }
     return null;
   }
