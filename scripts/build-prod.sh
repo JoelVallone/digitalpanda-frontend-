@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -e
+
 SCRIPT_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 SRC_FOLDER="${SCRIPT_FOLDER}/../src"
 PROD_FOLDER="${SCRIPT_FOLDER}/../dist/digitalpanda"
@@ -16,7 +19,7 @@ rm -rf ${DOCKER_IMAGE_BIN_FOLDER}
 cp -r ${PROD_FOLDER} ${DOCKER_IMAGE_BIN_FOLDER}
 
 echo "Build & push image to registry"
-VERSION="1.0.1"
+VERSION="1.1.0"
 REGISTRY="fanless1.digitalpanda.org:5000"
 IMAGE_NAME=${REGISTRY}/digitalpanda-frontend:${VERSION}
 docker build -t ${IMAGE_NAME} ${SCRIPT_FOLDER}/../

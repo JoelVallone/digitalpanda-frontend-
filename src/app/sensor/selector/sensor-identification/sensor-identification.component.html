@@ -31,7 +31,7 @@
                 <div class="text-center" style="margin-bottom : 5px;">
                     <i>{{locationMeasures.get('location').value}}</i>
                 </div>
-                <div class="row">
+                <div class="row" style="margin-bottom : 10px;">
                     <div class="col-6 text-left">
                         <button style="width: 55px;" *ngIf="!isMeasureTypesForLocationFull(locationMeasures.get('location').value)" class="btn btn-outline-success btn-sm" type="button" (click)="selectAllForLocation(locationMeasures.get('location').value)">
                         All

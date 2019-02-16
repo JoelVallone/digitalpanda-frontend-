@@ -71,7 +71,7 @@ export class TimeIntervalSelectorComponent {
   }
 
 
-  private setDefaultInterval() {
+  setDefaultInterval() {
     this.selectRelativeTime(this.DEFAULT_RELATIVE_TIME);
   }
   private addRelativeTime(timeDisplayName: string, timeMillis: number) {
